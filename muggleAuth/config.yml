@@ -12,3 +12,9 @@ client:
 faucet:
   name: bob 
   coins: ["5token"]
+init:
+  home: ".home"
+genesis:
+  app_state:
+    vac:
+      credentialList: [{"claim":1,"creator":"cosmos1h9wcvn34pccttedxr2fc4s805sauwdzvgjqejy","holder":"testholder","id":"0","issuer":"testauth"}]

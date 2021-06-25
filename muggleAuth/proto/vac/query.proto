@@ -1,0 +1,39 @@
+syntax = "proto3";
+package whalelephant.muggleAuth.vac;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+import "vac/credential.proto";
+
+option go_package = "github.com/whalelephant/certX/muggleAuth/x/vac/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // this line is used by starport scaffolding # 2
+	rpc Credential(QueryGetCredentialRequest) returns (QueryGetCredentialResponse) {
+		option (google.api.http).get = "/whalelephant/muggleAuth/vac/credential/{id}";
+	}
+	rpc CredentialAll(QueryAllCredentialRequest) returns (QueryAllCredentialResponse) {
+		option (google.api.http).get = "/whalelephant/muggleAuth/vac/credential";
+	}
+
+}
+
+// this line is used by starport scaffolding # 3
+message QueryGetCredentialRequest {
+	uint64 id = 1;
+}
+
+message QueryGetCredentialResponse {
+	Credential Credential = 1;
+}
+
+message QueryAllCredentialRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCredentialResponse {
+	repeated Credential Credential = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

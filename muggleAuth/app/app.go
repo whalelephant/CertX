@@ -82,10 +82,10 @@ import (
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	appparams "github.com/whalelephant/certX/muggleAuth/app/params"
-	"github.com/whalelephant/certX/muggleAuth/x/muggleAuth"
-	muggleAuthkeeper "github.com/whalelephant/certX/muggleAuth/x/muggleAuth/keeper"
-	muggleAuthtypes "github.com/whalelephant/certX/muggleAuth/x/muggleAuth/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
+	"github.com/whalelephant/certX/muggleAuth/x/vac"
+	vackeeper "github.com/whalelephant/certX/muggleAuth/x/vac/keeper"
+	vactypes "github.com/whalelephant/certX/muggleAuth/x/vac/types"
 )
 
 const Name = "muggleAuth"
@@ -131,8 +131,8 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		muggleAuth.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		vac.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -198,8 +198,9 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	muggleAuthKeeper muggleAuthkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
+	ScopedVacKeeper capabilitykeeper.ScopedKeeper
+	vacKeeper       vackeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -228,8 +229,8 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		muggleAuthtypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		vactypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -319,11 +320,18 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	app.muggleAuthKeeper = *muggleAuthkeeper.NewKeeper(
-		appCodec, keys[muggleAuthtypes.StoreKey], keys[muggleAuthtypes.MemStoreKey],
-	)
-
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
+	scopedVacKeeper := app.CapabilityKeeper.ScopeToModule(vactypes.ModuleName)
+	app.ScopedVacKeeper = scopedVacKeeper
+	app.vacKeeper = *vackeeper.NewKeeper(
+		appCodec,
+		keys[vactypes.StoreKey],
+		keys[vactypes.MemStoreKey],
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedVacKeeper,
+	)
+	vacModule := vac.NewAppModule(appCodec, app.vacKeeper)
 
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -334,6 +342,7 @@ func New(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
 	// this line is used by starport scaffolding # ibc/app/router
+	ibcRouter.AddRoute(vactypes.ModuleName, vacModule)
 	app.IBCKeeper.SetRouter(ibcRouter)
 
 	/****  Module Options ****/
@@ -365,8 +374,8 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
-		muggleAuth.NewAppModule(appCodec, app.muggleAuthKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
+		vacModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -399,8 +408,8 @@ func New(
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
-		muggleAuthtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		vactypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -583,6 +592,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(vactypes.ModuleName)
 
 	return paramsKeeper
 }

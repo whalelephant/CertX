@@ -1,0 +1,14 @@
+syntax = "proto3";
+package whalelephant.muggleAuth.vac;
+
+// this line is used by starport scaffolding # genesis/proto/import
+import "vac/credential.proto";
+
+option go_package = "github.com/whalelephant/certX/muggleAuth/x/vac/types";
+
+// GenesisState defines the vac module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+		repeated Credential credentialList = 2; // this line is used by starport scaffolding # genesis/proto/stateField
+    string port_id = 1; // this line is used by starport scaffolding # genesis/proto/stateField
+}

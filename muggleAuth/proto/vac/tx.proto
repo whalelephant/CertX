@@ -1,0 +1,43 @@
+syntax = "proto3";
+package whalelephant.muggleAuth.vac;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/whalelephant/certX/muggleAuth/x/vac/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreateCredential(MsgCreateCredential) returns (MsgCreateCredentialResponse);
+  rpc UpdateCredential(MsgUpdateCredential) returns (MsgUpdateCredentialResponse);
+  rpc DeleteCredential(MsgDeleteCredential) returns (MsgDeleteCredentialResponse);
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+message MsgCreateCredential {
+  string creator = 1;
+  string issuer = 2;
+  string holder = 3;
+  int32 claim = 4;
+}
+
+message MsgCreateCredentialResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateCredential {
+  string creator = 1;
+  uint64 id = 2;
+  string issuer = 3;
+  string holder = 4;
+  int32 claim = 5;
+}
+
+message MsgUpdateCredentialResponse { }
+
+message MsgDeleteCredential {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteCredentialResponse { }
