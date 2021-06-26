@@ -15,7 +15,7 @@ VerifiableCredential {
     # Issuer of this proof, e.g. health authority
     issuer: did 
     # Actual claim, e.g. vaccination record recieved or simply fully / partial / none
-    # (In the case that types of vaccine have different number requirements, should not be disclose)
+    # (i.e. the issuer can obfuscate details if they see fit)
     claim: some_claim_description,
     # Signature of the Issuer and related metadata
     signature: signature_info 
