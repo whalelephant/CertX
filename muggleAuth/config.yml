@@ -1,10 +1,15 @@
 accounts:
-  - name: alice
+  - name: healthauth
     coins: ["1000token", "100000000stake"]
+    mnemonic: "input price beyond scare demise display artefact hurdle until waste decide symbol choice crater rose above cigar blame segment scene current impose sunny void"
+  - name: alice 
+    coins: ["1000token"]
+    mnemonic: "satisfy ticket tornado intact whale sleep field gate rule unfair enemy winner mouse damp harvest error iron scissors primary you deer all rebel write"
   - name: bob
-    coins: ["500token"]
+    coins: ["5000token"]
+    mnemonic: "hurdle cactus weekend bamboo admit soap usual nerve arrive message final hedgehog drop safe drum wreck kit online clever radio gallery jelly blame one"
 validator:
-  name: alice
+  name: healthauth 
   staked: "100000000stake"
 client:
   vuex:
@@ -17,4 +22,4 @@ init:
 genesis:
   app_state:
     vac:
-      credentialList: [{"claim":1,"creator":"cosmos1h9wcvn34pccttedxr2fc4s805sauwdzvgjqejy","holder":"testholder","id":"0","issuer":"testauth"}]
+      credentialList: [{"claim":2,"creator":"cosmos1d3569vdcjt2cjff2mmqlk782hs07pjhr0mq0g3","holder":"did:muggleAuth:1fl5492k6uuqgent27lyp9tfwz5te50hm425k4f","id":"0","issuer":"did:muggleAuth:1d3569vdcjt2cjff2mmqlk782hs07pjhr0mq0g3"}]
