@@ -82,10 +82,10 @@ import (
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	appparams "github.com/whalelephant/certX/certX/app/params"
-	"github.com/whalelephant/certX/certX/x/certX"
-	certXkeeper "github.com/whalelephant/certX/certX/x/certX/keeper"
-	certXtypes "github.com/whalelephant/certX/certX/x/certX/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
+	"github.com/whalelephant/certX/certX/x/credential"
+	credentialkeeper "github.com/whalelephant/certX/certX/x/credential/keeper"
+	credentialtypes "github.com/whalelephant/certX/certX/x/credential/types"
 )
 
 const Name = "certX"
@@ -131,8 +131,8 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		certX.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		credential.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -198,8 +198,9 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	certXKeeper certXkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
+	ScopedCredentialKeeper capabilitykeeper.ScopedKeeper
+	CredentialKeeper       credentialkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -228,8 +229,8 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		certXtypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		credentialtypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -319,11 +320,18 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	app.certXKeeper = *certXkeeper.NewKeeper(
-		appCodec, keys[certXtypes.StoreKey], keys[certXtypes.MemStoreKey],
-	)
-
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
+	scopedCredentialKeeper := app.CapabilityKeeper.ScopeToModule(credentialtypes.ModuleName)
+	app.ScopedCredentialKeeper = scopedCredentialKeeper
+	app.CredentialKeeper = *credentialkeeper.NewKeeper(
+		appCodec,
+		keys[credentialtypes.StoreKey],
+		keys[credentialtypes.MemStoreKey],
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedCredentialKeeper,
+	)
+	credentialModule := credential.NewAppModule(appCodec, app.CredentialKeeper)
 
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -334,6 +342,7 @@ func New(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
 	// this line is used by starport scaffolding # ibc/app/router
+	ibcRouter.AddRoute(credentialtypes.ModuleName, credentialModule)
 	app.IBCKeeper.SetRouter(ibcRouter)
 
 	/****  Module Options ****/
@@ -365,8 +374,8 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
-		certX.NewAppModule(appCodec, app.certXKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
+		credentialModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -399,8 +408,8 @@ func New(
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
-		certXtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		credentialtypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -583,6 +592,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(credentialtypes.ModuleName)
 
 	return paramsKeeper
 }
