@@ -9,6 +9,8 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	// this line is used by starport scaffolding # 2
+	cdc.RegisterConcrete(&MsgSendVerifiableCredential{}, "vac/SendVerifiableCredential", nil)
+
 	cdc.RegisterConcrete(&MsgCreateCredential{}, "vac/CreateCredential", nil)
 	cdc.RegisterConcrete(&MsgUpdateCredential{}, "vac/UpdateCredential", nil)
 	cdc.RegisterConcrete(&MsgDeleteCredential{}, "vac/DeleteCredential", nil)
@@ -17,6 +19,9 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	// this line is used by starport scaffolding # 3
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSendVerifiableCredential{},
+	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateCredential{},
 		&MsgUpdateCredential{},

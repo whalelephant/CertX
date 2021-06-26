@@ -28,6 +28,150 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // this line is used by starport scaffolding # proto/tx/message
+type MsgSendVerifiableCredential struct {
+	Sender           string `protobuf:"bytes,1,opt,name=sender,proto3" json:"sender,omitempty"`
+	Port             string `protobuf:"bytes,2,opt,name=port,proto3" json:"port,omitempty"`
+	ChannelID        string `protobuf:"bytes,3,opt,name=channelID,proto3" json:"channelID,omitempty"`
+	TimeoutTimestamp uint64 `protobuf:"varint,4,opt,name=timeoutTimestamp,proto3" json:"timeoutTimestamp,omitempty"`
+	Subject          string `protobuf:"bytes,5,opt,name=subject,proto3" json:"subject,omitempty"`
+	Verifier         string `protobuf:"bytes,6,opt,name=verifier,proto3" json:"verifier,omitempty"`
+	Issuer           string `protobuf:"bytes,7,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	Claim            string `protobuf:"bytes,8,opt,name=claim,proto3" json:"claim,omitempty"`
+	Signature        string `protobuf:"bytes,9,opt,name=signature,proto3" json:"signature,omitempty"`
+}
+
+func (m *MsgSendVerifiableCredential) Reset()         { *m = MsgSendVerifiableCredential{} }
+func (m *MsgSendVerifiableCredential) String() string { return proto.CompactTextString(m) }
+func (*MsgSendVerifiableCredential) ProtoMessage()    {}
+func (*MsgSendVerifiableCredential) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3a1c8c55ef900670, []int{0}
+}
+func (m *MsgSendVerifiableCredential) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSendVerifiableCredential) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSendVerifiableCredential.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSendVerifiableCredential) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSendVerifiableCredential.Merge(m, src)
+}
+func (m *MsgSendVerifiableCredential) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSendVerifiableCredential) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSendVerifiableCredential.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSendVerifiableCredential proto.InternalMessageInfo
+
+func (m *MsgSendVerifiableCredential) GetSender() string {
+	if m != nil {
+		return m.Sender
+	}
+	return ""
+}
+
+func (m *MsgSendVerifiableCredential) GetPort() string {
+	if m != nil {
+		return m.Port
+	}
+	return ""
+}
+
+func (m *MsgSendVerifiableCredential) GetChannelID() string {
+	if m != nil {
+		return m.ChannelID
+	}
+	return ""
+}
+
+func (m *MsgSendVerifiableCredential) GetTimeoutTimestamp() uint64 {
+	if m != nil {
+		return m.TimeoutTimestamp
+	}
+	return 0
+}
+
+func (m *MsgSendVerifiableCredential) GetSubject() string {
+	if m != nil {
+		return m.Subject
+	}
+	return ""
+}
+
+func (m *MsgSendVerifiableCredential) GetVerifier() string {
+	if m != nil {
+		return m.Verifier
+	}
+	return ""
+}
+
+func (m *MsgSendVerifiableCredential) GetIssuer() string {
+	if m != nil {
+		return m.Issuer
+	}
+	return ""
+}
+
+func (m *MsgSendVerifiableCredential) GetClaim() string {
+	if m != nil {
+		return m.Claim
+	}
+	return ""
+}
+
+func (m *MsgSendVerifiableCredential) GetSignature() string {
+	if m != nil {
+		return m.Signature
+	}
+	return ""
+}
+
+type MsgSendVerifiableCredentialResponse struct {
+}
+
+func (m *MsgSendVerifiableCredentialResponse) Reset()         { *m = MsgSendVerifiableCredentialResponse{} }
+func (m *MsgSendVerifiableCredentialResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSendVerifiableCredentialResponse) ProtoMessage()    {}
+func (*MsgSendVerifiableCredentialResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3a1c8c55ef900670, []int{1}
+}
+func (m *MsgSendVerifiableCredentialResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSendVerifiableCredentialResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSendVerifiableCredentialResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSendVerifiableCredentialResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSendVerifiableCredentialResponse.Merge(m, src)
+}
+func (m *MsgSendVerifiableCredentialResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSendVerifiableCredentialResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSendVerifiableCredentialResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSendVerifiableCredentialResponse proto.InternalMessageInfo
+
 type MsgCreateCredential struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Issuer  string `protobuf:"bytes,2,opt,name=issuer,proto3" json:"issuer,omitempty"`
@@ -39,7 +183,7 @@ func (m *MsgCreateCredential) Reset()         { *m = MsgCreateCredential{} }
 func (m *MsgCreateCredential) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateCredential) ProtoMessage()    {}
 func (*MsgCreateCredential) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3a1c8c55ef900670, []int{0}
+	return fileDescriptor_3a1c8c55ef900670, []int{2}
 }
 func (m *MsgCreateCredential) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -104,7 +248,7 @@ func (m *MsgCreateCredentialResponse) Reset()         { *m = MsgCreateCredential
 func (m *MsgCreateCredentialResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateCredentialResponse) ProtoMessage()    {}
 func (*MsgCreateCredentialResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3a1c8c55ef900670, []int{1}
+	return fileDescriptor_3a1c8c55ef900670, []int{3}
 }
 func (m *MsgCreateCredentialResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -152,7 +296,7 @@ func (m *MsgUpdateCredential) Reset()         { *m = MsgUpdateCredential{} }
 func (m *MsgUpdateCredential) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdateCredential) ProtoMessage()    {}
 func (*MsgUpdateCredential) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3a1c8c55ef900670, []int{2}
+	return fileDescriptor_3a1c8c55ef900670, []int{4}
 }
 func (m *MsgUpdateCredential) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -223,7 +367,7 @@ func (m *MsgUpdateCredentialResponse) Reset()         { *m = MsgUpdateCredential
 func (m *MsgUpdateCredentialResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdateCredentialResponse) ProtoMessage()    {}
 func (*MsgUpdateCredentialResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3a1c8c55ef900670, []int{3}
+	return fileDescriptor_3a1c8c55ef900670, []int{5}
 }
 func (m *MsgUpdateCredentialResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -261,7 +405,7 @@ func (m *MsgDeleteCredential) Reset()         { *m = MsgDeleteCredential{} }
 func (m *MsgDeleteCredential) String() string { return proto.CompactTextString(m) }
 func (*MsgDeleteCredential) ProtoMessage()    {}
 func (*MsgDeleteCredential) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3a1c8c55ef900670, []int{4}
+	return fileDescriptor_3a1c8c55ef900670, []int{6}
 }
 func (m *MsgDeleteCredential) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -311,7 +455,7 @@ func (m *MsgDeleteCredentialResponse) Reset()         { *m = MsgDeleteCredential
 func (m *MsgDeleteCredentialResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgDeleteCredentialResponse) ProtoMessage()    {}
 func (*MsgDeleteCredentialResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3a1c8c55ef900670, []int{5}
+	return fileDescriptor_3a1c8c55ef900670, []int{7}
 }
 func (m *MsgDeleteCredentialResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -341,6 +485,8 @@ func (m *MsgDeleteCredentialResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgDeleteCredentialResponse proto.InternalMessageInfo
 
 func init() {
+	proto.RegisterType((*MsgSendVerifiableCredential)(nil), "whalelephant.muggleAuth.vac.MsgSendVerifiableCredential")
+	proto.RegisterType((*MsgSendVerifiableCredentialResponse)(nil), "whalelephant.muggleAuth.vac.MsgSendVerifiableCredentialResponse")
 	proto.RegisterType((*MsgCreateCredential)(nil), "whalelephant.muggleAuth.vac.MsgCreateCredential")
 	proto.RegisterType((*MsgCreateCredentialResponse)(nil), "whalelephant.muggleAuth.vac.MsgCreateCredentialResponse")
 	proto.RegisterType((*MsgUpdateCredential)(nil), "whalelephant.muggleAuth.vac.MsgUpdateCredential")
@@ -352,30 +498,40 @@ func init() {
 func init() { proto.RegisterFile("vac/tx.proto", fileDescriptor_3a1c8c55ef900670) }
 
 var fileDescriptor_3a1c8c55ef900670 = []byte{
-	// 357 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x93, 0xb1, 0x4b, 0xc3, 0x40,
-	0x14, 0xc6, 0x7b, 0x49, 0x5b, 0xf1, 0x10, 0x29, 0x51, 0x24, 0x58, 0x0c, 0x25, 0x53, 0x17, 0x13,
-	0x51, 0x07, 0x37, 0xd1, 0xba, 0xd6, 0x21, 0x20, 0x88, 0xdb, 0x35, 0x79, 0x24, 0x81, 0x6b, 0x2f,
-	0xdc, 0x5d, 0x6a, 0x5d, 0xba, 0x75, 0xf7, 0xcf, 0x72, 0xec, 0xe8, 0x28, 0xed, 0x3f, 0x22, 0xbd,
-	0x34, 0x5a, 0xd2, 0xd6, 0xa8, 0xe3, 0xf7, 0x8e, 0xf7, 0x7d, 0x3f, 0xde, 0xc7, 0xe1, 0xbd, 0x21,
-	0xf1, 0x5d, 0x39, 0x72, 0x12, 0xce, 0x24, 0x33, 0x9a, 0xcf, 0x11, 0xa1, 0x40, 0x21, 0x89, 0xc8,
-	0x40, 0x3a, 0xfd, 0x34, 0x0c, 0x29, 0xdc, 0xa4, 0x32, 0x72, 0x86, 0xc4, 0xb7, 0x53, 0x7c, 0xd0,
-	0x15, 0x61, 0x87, 0x03, 0x91, 0xd0, 0xe1, 0x10, 0xc0, 0x40, 0xc6, 0x84, 0x1a, 0x26, 0xde, 0xf1,
-	0x17, 0x33, 0xc6, 0x4d, 0xd4, 0x42, 0xed, 0x5d, 0x2f, 0x97, 0xc6, 0x11, 0xae, 0xc7, 0x42, 0xa4,
-	0xc0, 0x4d, 0x4d, 0x3d, 0x2c, 0xd5, 0x62, 0x1e, 0x31, 0x1a, 0x00, 0x37, 0xf5, 0x6c, 0x9e, 0x29,
-	0xe3, 0x10, 0xd7, 0x7c, 0x4a, 0xe2, 0xbe, 0x59, 0x6d, 0xa1, 0x76, 0xcd, 0xcb, 0x84, 0x7d, 0x8a,
-	0x9b, 0x1b, 0x62, 0x3d, 0x10, 0x09, 0x1b, 0x08, 0x30, 0xf6, 0xb1, 0x16, 0x07, 0x2a, 0xb9, 0xea,
-	0x69, 0x71, 0x60, 0x4f, 0x90, 0xc2, 0x7c, 0x48, 0x82, 0xdf, 0x62, 0x66, 0x0e, 0x5a, 0xee, 0xb0,
-	0x82, 0xad, 0x6f, 0xc1, 0xae, 0x6e, 0xc6, 0xae, 0xad, 0x62, 0x9f, 0x28, 0xec, 0x22, 0x46, 0x8e,
-	0x6d, 0x5f, 0x2b, 0xca, 0x3b, 0xa0, 0xf0, 0x3f, 0xca, 0xa5, 0x7f, 0xd1, 0x20, 0xf7, 0x3f, 0x9f,
-	0xe8, 0x58, 0xef, 0x8a, 0xd0, 0x18, 0xe3, 0xc6, 0x5a, 0x63, 0x67, 0xce, 0x0f, 0x35, 0x3b, 0x1b,
-	0x8e, 0x7d, 0x7c, 0xf5, 0xd7, 0x8d, 0xaf, 0x7a, 0xc6, 0xb8, 0xb1, 0x56, 0x45, 0x69, 0x7e, 0x71,
-	0xa3, 0x3c, 0x7f, 0xdb, 0x9d, 0x17, 0xf9, 0x6b, 0x47, 0x2e, 0xcd, 0x2f, 0x6e, 0x94, 0xe7, 0x6f,
-	0xeb, 0xe1, 0xf6, 0xfe, 0x6d, 0x66, 0xa1, 0xe9, 0xcc, 0x42, 0x1f, 0x33, 0x0b, 0xbd, 0xce, 0xad,
-	0xca, 0x74, 0x6e, 0x55, 0xde, 0xe7, 0x56, 0xe5, 0xe9, 0x32, 0x8c, 0x65, 0x94, 0xf6, 0x1c, 0x9f,
-	0xf5, 0xdd, 0x55, 0x77, 0xd7, 0x07, 0x2e, 0x1f, 0xdd, 0xef, 0x0c, 0x77, 0xe4, 0xaa, 0x4f, 0xfa,
-	0x92, 0x80, 0xe8, 0xd5, 0xd5, 0x47, 0xbd, 0xf8, 0x0c, 0x00, 0x00, 0xff, 0xff, 0xc7, 0x22, 0x6d,
-	0x62, 0xb8, 0x03, 0x00, 0x00,
+	// 514 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0x3b, 0x8f, 0xd3, 0x40,
+	0x14, 0x85, 0x63, 0xc7, 0x49, 0x36, 0x23, 0x84, 0x56, 0x03, 0x5a, 0x8d, 0xb2, 0x60, 0xad, 0x8c,
+	0x90, 0x56, 0x48, 0xd8, 0x08, 0x28, 0xb6, 0xe3, 0xb1, 0xdb, 0x50, 0x84, 0x22, 0x3c, 0x84, 0xe8,
+	0x26, 0xf6, 0xc5, 0x1e, 0x34, 0x7e, 0x68, 0x66, 0x1c, 0x96, 0x86, 0x8e, 0x9e, 0x06, 0x4a, 0x7e,
+	0x0f, 0xe5, 0x96, 0x94, 0x28, 0xf9, 0x23, 0xc8, 0xe3, 0x38, 0x31, 0x0e, 0x89, 0x61, 0x3b, 0xdf,
+	0x3b, 0xba, 0xe7, 0x7c, 0x3a, 0x73, 0x3d, 0xe8, 0xca, 0x8c, 0xfa, 0x9e, 0x3a, 0x77, 0x33, 0x91,
+	0xaa, 0x14, 0x1f, 0x7e, 0x88, 0x28, 0x07, 0x0e, 0x59, 0x44, 0x13, 0xe5, 0xc6, 0x79, 0x18, 0x72,
+	0x78, 0x92, 0xab, 0xc8, 0x9d, 0x51, 0xdf, 0xf9, 0x6a, 0xa2, 0xc3, 0xb1, 0x0c, 0x5f, 0x40, 0x12,
+	0xbc, 0x06, 0xc1, 0xde, 0x31, 0x3a, 0xe5, 0x70, 0x2a, 0x20, 0x80, 0x44, 0x31, 0xca, 0xf1, 0x01,
+	0xea, 0x4b, 0x48, 0x02, 0x10, 0xc4, 0x38, 0x32, 0x8e, 0x87, 0x93, 0x65, 0x85, 0x31, 0xb2, 0xb2,
+	0x54, 0x28, 0x62, 0xea, 0xae, 0xfe, 0xc6, 0x37, 0xd0, 0xd0, 0x8f, 0x68, 0x92, 0x00, 0x7f, 0x76,
+	0x46, 0xba, 0xfa, 0x60, 0xdd, 0xc0, 0x77, 0xd0, 0xbe, 0x62, 0x31, 0xa4, 0xb9, 0x7a, 0xc9, 0x62,
+	0x90, 0x8a, 0xc6, 0x19, 0xb1, 0x8e, 0x8c, 0x63, 0x6b, 0xb2, 0xd1, 0xc7, 0x04, 0x0d, 0x64, 0x3e,
+	0x7d, 0x0f, 0xbe, 0x22, 0x3d, 0xad, 0x53, 0x95, 0x78, 0x84, 0xf6, 0x66, 0x9a, 0x13, 0x04, 0xe9,
+	0xeb, 0xa3, 0x55, 0x5d, 0xb0, 0x32, 0x29, 0x73, 0x10, 0x64, 0x50, 0xb2, 0x96, 0x15, 0xbe, 0x8e,
+	0x7a, 0x3e, 0xa7, 0x2c, 0x26, 0x7b, 0xba, 0x5d, 0x16, 0x05, 0xad, 0x64, 0x61, 0x42, 0x55, 0x2e,
+	0x80, 0x0c, 0x4b, 0xda, 0x55, 0xc3, 0xb9, 0x8d, 0x6e, 0xed, 0x88, 0x65, 0x02, 0x32, 0x4b, 0x13,
+	0x09, 0x4e, 0x8e, 0xae, 0x8d, 0x65, 0x78, 0x2a, 0x80, 0xaa, 0x7a, 0x6a, 0x04, 0x0d, 0xfc, 0xa2,
+	0x97, 0x56, 0xb1, 0x55, 0x65, 0x8d, 0xd1, 0xfc, 0x83, 0xf1, 0x00, 0xf5, 0xa3, 0x94, 0x17, 0x39,
+	0x97, 0xc1, 0x2d, 0xab, 0x35, 0x7b, 0x11, 0x55, 0x6f, 0xc9, 0xee, 0xdc, 0xd5, 0x97, 0xd6, 0xb4,
+	0xad, 0xa8, 0xf0, 0x55, 0x64, 0xb2, 0x40, 0x3b, 0x5b, 0x13, 0x93, 0x05, 0xce, 0x67, 0x43, 0x63,
+	0xbe, 0xca, 0x82, 0x7f, 0xc5, 0x2c, 0x15, 0xcc, 0x4a, 0xa1, 0x86, 0xdd, 0xdd, 0x82, 0x6d, 0xfd,
+	0x1d, 0xbb, 0x57, 0xc7, 0xbe, 0xa9, 0xb1, 0x9b, 0x18, 0xab, 0x30, 0x1f, 0x69, 0xca, 0x33, 0xe0,
+	0x70, 0x39, 0xca, 0xa5, 0x7e, 0x53, 0xa0, 0xd2, 0xbf, 0xff, 0xdd, 0x42, 0xdd, 0xb1, 0x0c, 0xf1,
+	0x37, 0x03, 0x91, 0xad, 0x0b, 0x7f, 0xe2, 0xee, 0xf8, 0x5d, 0xdc, 0x1d, 0x3b, 0x31, 0x7a, 0x7c,
+	0xd9, 0xc9, 0xd5, 0xbd, 0x7d, 0x42, 0xfb, 0x1b, 0xab, 0x74, 0xaf, 0x4d, 0xb5, 0x39, 0x31, 0x3a,
+	0xf9, 0xdf, 0x89, 0xba, 0xff, 0xc6, 0x8e, 0xb4, 0xfa, 0x37, 0x27, 0xda, 0xfd, 0xb7, 0x2d, 0x40,
+	0xe1, 0xbf, 0x71, 0xfb, 0xad, 0xfe, 0xcd, 0x89, 0x76, 0xff, 0x6d, 0x0b, 0xf2, 0xf4, 0xf9, 0x8f,
+	0xb9, 0x6d, 0x5c, 0xcc, 0x6d, 0xe3, 0xd7, 0xdc, 0x36, 0xbe, 0x2c, 0xec, 0xce, 0xc5, 0xc2, 0xee,
+	0xfc, 0x5c, 0xd8, 0x9d, 0xb7, 0x0f, 0x43, 0xa6, 0xa2, 0x7c, 0xea, 0xfa, 0x69, 0xec, 0xd5, 0xd5,
+	0x3d, 0x1f, 0x84, 0x7a, 0xe3, 0xad, 0x3d, 0xbc, 0x73, 0x4f, 0x3f, 0xbe, 0x1f, 0x33, 0x90, 0xd3,
+	0xbe, 0x7e, 0x80, 0x1f, 0xfc, 0x0e, 0x00, 0x00, 0xff, 0xff, 0xf5, 0xd5, 0x50, 0x2d, 0x90, 0x05,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -391,6 +547,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	// this line is used by starport scaffolding # proto/tx/rpc
+	SendVerifiableCredential(ctx context.Context, in *MsgSendVerifiableCredential, opts ...grpc.CallOption) (*MsgSendVerifiableCredentialResponse, error)
 	CreateCredential(ctx context.Context, in *MsgCreateCredential, opts ...grpc.CallOption) (*MsgCreateCredentialResponse, error)
 	UpdateCredential(ctx context.Context, in *MsgUpdateCredential, opts ...grpc.CallOption) (*MsgUpdateCredentialResponse, error)
 	DeleteCredential(ctx context.Context, in *MsgDeleteCredential, opts ...grpc.CallOption) (*MsgDeleteCredentialResponse, error)
@@ -402,6 +559,15 @@ type msgClient struct {
 
 func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
+}
+
+func (c *msgClient) SendVerifiableCredential(ctx context.Context, in *MsgSendVerifiableCredential, opts ...grpc.CallOption) (*MsgSendVerifiableCredentialResponse, error) {
+	out := new(MsgSendVerifiableCredentialResponse)
+	err := c.cc.Invoke(ctx, "/whalelephant.muggleAuth.vac.Msg/SendVerifiableCredential", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *msgClient) CreateCredential(ctx context.Context, in *MsgCreateCredential, opts ...grpc.CallOption) (*MsgCreateCredentialResponse, error) {
@@ -434,6 +600,7 @@ func (c *msgClient) DeleteCredential(ctx context.Context, in *MsgDeleteCredentia
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	// this line is used by starport scaffolding # proto/tx/rpc
+	SendVerifiableCredential(context.Context, *MsgSendVerifiableCredential) (*MsgSendVerifiableCredentialResponse, error)
 	CreateCredential(context.Context, *MsgCreateCredential) (*MsgCreateCredentialResponse, error)
 	UpdateCredential(context.Context, *MsgUpdateCredential) (*MsgUpdateCredentialResponse, error)
 	DeleteCredential(context.Context, *MsgDeleteCredential) (*MsgDeleteCredentialResponse, error)
@@ -443,6 +610,9 @@ type MsgServer interface {
 type UnimplementedMsgServer struct {
 }
 
+func (*UnimplementedMsgServer) SendVerifiableCredential(ctx context.Context, req *MsgSendVerifiableCredential) (*MsgSendVerifiableCredentialResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendVerifiableCredential not implemented")
+}
 func (*UnimplementedMsgServer) CreateCredential(ctx context.Context, req *MsgCreateCredential) (*MsgCreateCredentialResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCredential not implemented")
 }
@@ -455,6 +625,24 @@ func (*UnimplementedMsgServer) DeleteCredential(ctx context.Context, req *MsgDel
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
+}
+
+func _Msg_SendVerifiableCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSendVerifiableCredential)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SendVerifiableCredential(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/whalelephant.muggleAuth.vac.Msg/SendVerifiableCredential",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SendVerifiableCredential(ctx, req.(*MsgSendVerifiableCredential))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Msg_CreateCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -516,6 +704,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "SendVerifiableCredential",
+			Handler:    _Msg_SendVerifiableCredential_Handler,
+		},
+		{
 			MethodName: "CreateCredential",
 			Handler:    _Msg_CreateCredential_Handler,
 		},
@@ -530,6 +722,113 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "vac/tx.proto",
+}
+
+func (m *MsgSendVerifiableCredential) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSendVerifiableCredential) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSendVerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Signature) > 0 {
+		i -= len(m.Signature)
+		copy(dAtA[i:], m.Signature)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Signature)))
+		i--
+		dAtA[i] = 0x4a
+	}
+	if len(m.Claim) > 0 {
+		i -= len(m.Claim)
+		copy(dAtA[i:], m.Claim)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Claim)))
+		i--
+		dAtA[i] = 0x42
+	}
+	if len(m.Issuer) > 0 {
+		i -= len(m.Issuer)
+		copy(dAtA[i:], m.Issuer)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Issuer)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.Verifier) > 0 {
+		i -= len(m.Verifier)
+		copy(dAtA[i:], m.Verifier)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Verifier)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.Subject) > 0 {
+		i -= len(m.Subject)
+		copy(dAtA[i:], m.Subject)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Subject)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.TimeoutTimestamp != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.TimeoutTimestamp))
+		i--
+		dAtA[i] = 0x20
+	}
+	if len(m.ChannelID) > 0 {
+		i -= len(m.ChannelID)
+		copy(dAtA[i:], m.ChannelID)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ChannelID)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Port) > 0 {
+		i -= len(m.Port)
+		copy(dAtA[i:], m.Port)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Port)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Sender) > 0 {
+		i -= len(m.Sender)
+		copy(dAtA[i:], m.Sender)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Sender)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSendVerifiableCredentialResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSendVerifiableCredentialResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSendVerifiableCredentialResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
 }
 
 func (m *MsgCreateCredential) Marshal() (dAtA []byte, err error) {
@@ -755,6 +1054,59 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *MsgSendVerifiableCredential) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Sender)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Port)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.ChannelID)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.TimeoutTimestamp != 0 {
+		n += 1 + sovTx(uint64(m.TimeoutTimestamp))
+	}
+	l = len(m.Subject)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Verifier)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Issuer)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Claim)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Signature)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgSendVerifiableCredentialResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
 func (m *MsgCreateCredential) Size() (n int) {
 	if m == nil {
 		return 0
@@ -857,6 +1209,381 @@ func sovTx(x uint64) (n int) {
 }
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *MsgSendVerifiableCredential) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSendVerifiableCredential: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSendVerifiableCredential: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Sender", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Sender = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Port", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Port = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChannelID", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ChannelID = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TimeoutTimestamp", wireType)
+			}
+			m.TimeoutTimestamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TimeoutTimestamp |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Subject", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Subject = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Verifier", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Verifier = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Issuer", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Issuer = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Claim", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Claim = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Signature", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Signature = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSendVerifiableCredentialResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSendVerifiableCredentialResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSendVerifiableCredentialResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *MsgCreateCredential) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)

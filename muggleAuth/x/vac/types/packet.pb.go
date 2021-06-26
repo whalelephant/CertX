@@ -25,6 +25,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type VacPacketData struct {
 	// Types that are valid to be assigned to Packet:
 	//	*VacPacketData_NoData
+	//	*VacPacketData_VerifiableCredentialPacket
 	Packet isVacPacketData_Packet `protobuf_oneof:"packet"`
 }
 
@@ -70,8 +71,12 @@ type isVacPacketData_Packet interface {
 type VacPacketData_NoData struct {
 	NoData *NoData `protobuf:"bytes,1,opt,name=noData,proto3,oneof" json:"noData,omitempty"`
 }
+type VacPacketData_VerifiableCredentialPacket struct {
+	VerifiableCredentialPacket *VerifiableCredentialPacketData `protobuf:"bytes,2,opt,name=verifiableCredentialPacket,proto3,oneof" json:"verifiableCredentialPacket,omitempty"`
+}
 
-func (*VacPacketData_NoData) isVacPacketData_Packet() {}
+func (*VacPacketData_NoData) isVacPacketData_Packet()                     {}
+func (*VacPacketData_VerifiableCredentialPacket) isVacPacketData_Packet() {}
 
 func (m *VacPacketData) GetPacket() isVacPacketData_Packet {
 	if m != nil {
@@ -87,10 +92,18 @@ func (m *VacPacketData) GetNoData() *NoData {
 	return nil
 }
 
+func (m *VacPacketData) GetVerifiableCredentialPacket() *VerifiableCredentialPacketData {
+	if x, ok := m.GetPacket().(*VacPacketData_VerifiableCredentialPacket); ok {
+		return x.VerifiableCredentialPacket
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*VacPacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*VacPacketData_NoData)(nil),
+		(*VacPacketData_VerifiableCredentialPacket)(nil),
 	}
 }
 
@@ -130,27 +143,153 @@ func (m *NoData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_NoData proto.InternalMessageInfo
 
+// this line is used by starport scaffolding # ibc/packet/proto/message
+// VerifiableCredentialPacketData defines a struct for the packet payload
+type VerifiableCredentialPacketData struct {
+	Subject   string `protobuf:"bytes,1,opt,name=subject,proto3" json:"subject,omitempty"`
+	Verifier  string `protobuf:"bytes,2,opt,name=verifier,proto3" json:"verifier,omitempty"`
+	Issuer    string `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	Claim     string `protobuf:"bytes,4,opt,name=claim,proto3" json:"claim,omitempty"`
+	Signature string `protobuf:"bytes,5,opt,name=signature,proto3" json:"signature,omitempty"`
+}
+
+func (m *VerifiableCredentialPacketData) Reset()         { *m = VerifiableCredentialPacketData{} }
+func (m *VerifiableCredentialPacketData) String() string { return proto.CompactTextString(m) }
+func (*VerifiableCredentialPacketData) ProtoMessage()    {}
+func (*VerifiableCredentialPacketData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a5bdf6521f04912f, []int{2}
+}
+func (m *VerifiableCredentialPacketData) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *VerifiableCredentialPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_VerifiableCredentialPacketData.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *VerifiableCredentialPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_VerifiableCredentialPacketData.Merge(m, src)
+}
+func (m *VerifiableCredentialPacketData) XXX_Size() int {
+	return m.Size()
+}
+func (m *VerifiableCredentialPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_VerifiableCredentialPacketData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_VerifiableCredentialPacketData proto.InternalMessageInfo
+
+func (m *VerifiableCredentialPacketData) GetSubject() string {
+	if m != nil {
+		return m.Subject
+	}
+	return ""
+}
+
+func (m *VerifiableCredentialPacketData) GetVerifier() string {
+	if m != nil {
+		return m.Verifier
+	}
+	return ""
+}
+
+func (m *VerifiableCredentialPacketData) GetIssuer() string {
+	if m != nil {
+		return m.Issuer
+	}
+	return ""
+}
+
+func (m *VerifiableCredentialPacketData) GetClaim() string {
+	if m != nil {
+		return m.Claim
+	}
+	return ""
+}
+
+func (m *VerifiableCredentialPacketData) GetSignature() string {
+	if m != nil {
+		return m.Signature
+	}
+	return ""
+}
+
+// VerifiableCredentialPacketAck defines a struct for the packet acknowledgment
+type VerifiableCredentialPacketAck struct {
+}
+
+func (m *VerifiableCredentialPacketAck) Reset()         { *m = VerifiableCredentialPacketAck{} }
+func (m *VerifiableCredentialPacketAck) String() string { return proto.CompactTextString(m) }
+func (*VerifiableCredentialPacketAck) ProtoMessage()    {}
+func (*VerifiableCredentialPacketAck) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a5bdf6521f04912f, []int{3}
+}
+func (m *VerifiableCredentialPacketAck) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *VerifiableCredentialPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_VerifiableCredentialPacketAck.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *VerifiableCredentialPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_VerifiableCredentialPacketAck.Merge(m, src)
+}
+func (m *VerifiableCredentialPacketAck) XXX_Size() int {
+	return m.Size()
+}
+func (m *VerifiableCredentialPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_VerifiableCredentialPacketAck.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_VerifiableCredentialPacketAck proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*VacPacketData)(nil), "whalelephant.muggleAuth.vac.VacPacketData")
 	proto.RegisterType((*NoData)(nil), "whalelephant.muggleAuth.vac.NoData")
+	proto.RegisterType((*VerifiableCredentialPacketData)(nil), "whalelephant.muggleAuth.vac.VerifiableCredentialPacketData")
+	proto.RegisterType((*VerifiableCredentialPacketAck)(nil), "whalelephant.muggleAuth.vac.VerifiableCredentialPacketAck")
 }
 
 func init() { proto.RegisterFile("vac/packet.proto", fileDescriptor_a5bdf6521f04912f) }
 
 var fileDescriptor_a5bdf6521f04912f = []byte{
-	// 192 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x4b, 0x4c, 0xd6,
-	0x2f, 0x48, 0x4c, 0xce, 0x4e, 0x2d, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x2e, 0xcf,
-	0x48, 0xcc, 0x49, 0xcd, 0x49, 0x2d, 0xc8, 0x48, 0xcc, 0x2b, 0xd1, 0xcb, 0x2d, 0x4d, 0x4f, 0xcf,
-	0x49, 0x75, 0x2c, 0x2d, 0xc9, 0xd0, 0x2b, 0x4b, 0x4c, 0x56, 0x8a, 0xe0, 0xe2, 0x0d, 0x4b, 0x4c,
-	0x0e, 0x00, 0xab, 0x77, 0x49, 0x2c, 0x49, 0x14, 0xb2, 0xe5, 0x62, 0xcb, 0xcb, 0x07, 0xb1, 0x24,
-	0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d, 0x94, 0xf5, 0xf0, 0x68, 0xd7, 0xf3, 0x03, 0x2b, 0xf5, 0x60,
-	0x08, 0x82, 0x6a, 0x72, 0xe2, 0xe0, 0x62, 0x83, 0x58, 0xae, 0xc4, 0xc1, 0xc5, 0x06, 0x91, 0x75,
-	0xf2, 0x3b, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c,
-	0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0x93, 0xf4, 0xcc, 0x92,
-	0x8c, 0xd2, 0x24, 0xbd, 0xe4, 0xfc, 0x5c, 0x7d, 0x64, 0x6b, 0xf4, 0x93, 0x53, 0x8b, 0x4a, 0x22,
-	0xf4, 0x11, 0x96, 0xe9, 0x57, 0xe8, 0x83, 0xfc, 0x55, 0x52, 0x59, 0x90, 0x5a, 0x9c, 0xc4, 0x06,
-	0xf6, 0x97, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0x02, 0x23, 0x78, 0xe2, 0xeb, 0x00, 0x00, 0x00,
+	// 327 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x52, 0xbd, 0x4e, 0xc3, 0x30,
+	0x10, 0x8e, 0x81, 0x86, 0xf6, 0x10, 0x12, 0xb2, 0x10, 0x8a, 0x0a, 0x18, 0x14, 0x16, 0xa6, 0x44,
+	0x02, 0x36, 0xc4, 0xd0, 0xc2, 0xc0, 0x54, 0xa1, 0x0e, 0x15, 0x62, 0x73, 0xcc, 0x91, 0x98, 0xa6,
+	0x49, 0xe4, 0x38, 0x05, 0x06, 0xde, 0x81, 0x67, 0xe0, 0x69, 0x18, 0xbb, 0xc1, 0x88, 0xda, 0x17,
+	0x41, 0x75, 0x02, 0x65, 0x69, 0x36, 0x7f, 0x77, 0xfe, 0x7e, 0xee, 0x74, 0xb0, 0x35, 0xe6, 0xc2,
+	0xcf, 0xb8, 0x18, 0xa2, 0xf6, 0x32, 0x95, 0xea, 0x94, 0xee, 0x3e, 0x45, 0x3c, 0xc6, 0x18, 0xb3,
+	0x88, 0x27, 0xda, 0x1b, 0x15, 0x61, 0x18, 0x63, 0xa7, 0xd0, 0x91, 0x37, 0xe6, 0xc2, 0xfd, 0x24,
+	0xb0, 0x39, 0xe0, 0xe2, 0xc6, 0x10, 0xae, 0xb8, 0xe6, 0xf4, 0x02, 0xec, 0x24, 0x9d, 0xbf, 0x1c,
+	0x72, 0x48, 0x8e, 0x37, 0x4e, 0x8e, 0xbc, 0x1a, 0xbe, 0xd7, 0x33, 0x5f, 0xaf, 0xad, 0x7e, 0x45,
+	0xa2, 0xaf, 0xd0, 0x1e, 0xa3, 0x92, 0x0f, 0x92, 0x07, 0x31, 0x5e, 0x2a, 0xbc, 0xc7, 0x44, 0x4b,
+	0x1e, 0x97, 0x06, 0xce, 0x8a, 0x91, 0x3c, 0xaf, 0x95, 0x1c, 0x2c, 0xa5, 0x57, 0x56, 0x35, 0x06,
+	0xdd, 0x26, 0xd8, 0xe5, 0xf0, 0x6e, 0x13, 0xec, 0x32, 0x9c, 0xfb, 0x4e, 0x80, 0xd5, 0x8b, 0x52,
+	0x07, 0xd6, 0xf3, 0x22, 0x78, 0x44, 0xa1, 0xcd, 0xd4, 0xad, 0xfe, 0x2f, 0xa4, 0x6d, 0x68, 0x96,
+	0x76, 0xa8, 0x4c, 0xfa, 0x56, 0xff, 0x0f, 0xd3, 0x1d, 0xb0, 0x65, 0x9e, 0x17, 0xa8, 0x9c, 0x55,
+	0xd3, 0xa9, 0x10, 0xdd, 0x86, 0x86, 0x88, 0xb9, 0x1c, 0x39, 0x6b, 0xa6, 0x5c, 0x02, 0xba, 0x07,
+	0xad, 0x5c, 0x86, 0x09, 0xd7, 0x85, 0x42, 0xa7, 0x61, 0x3a, 0x8b, 0x82, 0x7b, 0x00, 0xfb, 0xcb,
+	0x33, 0x76, 0xc4, 0xb0, 0xdb, 0xfb, 0x98, 0x32, 0x32, 0x99, 0x32, 0xf2, 0x3d, 0x65, 0xe4, 0x6d,
+	0xc6, 0xac, 0xc9, 0x8c, 0x59, 0x5f, 0x33, 0x66, 0xdd, 0x9d, 0x85, 0x52, 0x47, 0x45, 0xe0, 0x89,
+	0x74, 0xe4, 0xff, 0x5f, 0xac, 0x2f, 0x50, 0xe9, 0x5b, 0x7f, 0xb1, 0x5e, 0xff, 0xd9, 0x9f, 0x5f,
+	0x87, 0x7e, 0xc9, 0x30, 0x0f, 0x6c, 0x73, 0x1d, 0xa7, 0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x8c,
+	0x71, 0x5b, 0xc4, 0x31, 0x02, 0x00, 0x00,
 }
 
 func (m *VacPacketData) Marshal() (dAtA []byte, err error) {
@@ -206,6 +345,27 @@ func (m *VacPacketData_NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	return len(dAtA) - i, nil
 }
+func (m *VacPacketData_VerifiableCredentialPacket) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *VacPacketData_VerifiableCredentialPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.VerifiableCredentialPacket != nil {
+		{
+			size, err := m.VerifiableCredentialPacket.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPacket(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	return len(dAtA) - i, nil
+}
 func (m *NoData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -222,6 +382,87 @@ func (m *NoData) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *VerifiableCredentialPacketData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *VerifiableCredentialPacketData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *VerifiableCredentialPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Signature) > 0 {
+		i -= len(m.Signature)
+		copy(dAtA[i:], m.Signature)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Signature)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.Claim) > 0 {
+		i -= len(m.Claim)
+		copy(dAtA[i:], m.Claim)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Claim)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Issuer) > 0 {
+		i -= len(m.Issuer)
+		copy(dAtA[i:], m.Issuer)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Issuer)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Verifier) > 0 {
+		i -= len(m.Verifier)
+		copy(dAtA[i:], m.Verifier)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Verifier)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Subject) > 0 {
+		i -= len(m.Subject)
+		copy(dAtA[i:], m.Subject)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Subject)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *VerifiableCredentialPacketAck) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *VerifiableCredentialPacketAck) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *VerifiableCredentialPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -264,7 +505,57 @@ func (m *VacPacketData_NoData) Size() (n int) {
 	}
 	return n
 }
+func (m *VacPacketData_VerifiableCredentialPacket) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.VerifiableCredentialPacket != nil {
+		l = m.VerifiableCredentialPacket.Size()
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	return n
+}
 func (m *NoData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *VerifiableCredentialPacketData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Subject)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Verifier)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Issuer)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Claim)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Signature)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	return n
+}
+
+func (m *VerifiableCredentialPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -343,6 +634,41 @@ func (m *VacPacketData) Unmarshal(dAtA []byte) error {
 			}
 			m.Packet = &VacPacketData_NoData{v}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VerifiableCredentialPacket", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &VerifiableCredentialPacketData{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Packet = &VacPacketData_VerifiableCredentialPacket{v}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPacket(dAtA[iNdEx:])
@@ -391,6 +717,266 @@ func (m *NoData) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: NoData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *VerifiableCredentialPacketData) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: VerifiableCredentialPacketData: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: VerifiableCredentialPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Subject", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Subject = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Verifier", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Verifier = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Issuer", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Issuer = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Claim", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Claim = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Signature", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Signature = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *VerifiableCredentialPacketAck) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: VerifiableCredentialPacketAck: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: VerifiableCredentialPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

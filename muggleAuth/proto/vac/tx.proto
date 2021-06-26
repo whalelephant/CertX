@@ -8,12 +8,28 @@ option go_package = "github.com/whalelephant/certX/muggleAuth/x/vac/types";
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+  rpc SendVerifiableCredential(MsgSendVerifiableCredential) returns (MsgSendVerifiableCredentialResponse);
   rpc CreateCredential(MsgCreateCredential) returns (MsgCreateCredentialResponse);
   rpc UpdateCredential(MsgUpdateCredential) returns (MsgUpdateCredentialResponse);
   rpc DeleteCredential(MsgDeleteCredential) returns (MsgDeleteCredentialResponse);
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+message MsgSendVerifiableCredential {
+  string sender = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+  string subject = 5;
+  string verifier = 6;
+  string issuer = 7;
+  string claim = 8;
+  string signature = 9;
+}
+
+message MsgSendVerifiableCredentialResponse {
+}
+
 message MsgCreateCredential {
   string creator = 1;
   string issuer = 2;

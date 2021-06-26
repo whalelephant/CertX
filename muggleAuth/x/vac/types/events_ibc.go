@@ -4,6 +4,7 @@ package types
 const (
 	EventTypeTimeout = "timeout"
 	// this line is used by starport scaffolding # ibc/packet/event
+	EventTypeVerifiableCredentialPacket = "verifiableCredential_packet"
 
 	AttributeKeyAckSuccess = "success"
 	AttributeKeyAck        = "acknowledgement"

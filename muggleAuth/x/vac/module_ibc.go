@@ -145,6 +145,25 @@ func (am AppModule) OnRecvPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/recv
+	case *types.VacPacketData_VerifiableCredentialPacket:
+		packetAck, err := am.keeper.OnRecvVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err.Error())
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+			if err != nil {
+				return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+			}
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeVerifiableCredentialPacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+			),
+		)
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -182,6 +201,12 @@ func (am AppModule) OnAcknowledgementPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/ack
+	case *types.VacPacketData_VerifiableCredentialPacket:
+		err := am.keeper.OnAcknowledgementVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket, ack)
+		if err != nil {
+			return nil, err
+		}
+		eventType = types.EventTypeVerifiableCredentialPacket
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -230,6 +255,11 @@ func (am AppModule) OnTimeoutPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/timeout
+	case *types.VacPacketData_VerifiableCredentialPacket:
+		err := am.keeper.OnTimeoutVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket)
+		if err != nil {
+			return nil, err
+		}
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
