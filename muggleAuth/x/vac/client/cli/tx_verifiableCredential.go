@@ -19,6 +19,9 @@ func CmdSendVerifiableCredential() *cobra.Command {
 		Short: "Send a verifiableCredential over IBC",
 		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) error {
+
+            // TODO The subject should be generated, a new identifier which has a keypair stored in the keyring-backend
+            // The verifier did should be the name of this new identifier so the user knows
 			argsSubject := string(args[2])
 			argsVerifier := string(args[3])
 			argsClaim := string(args[4])
@@ -29,6 +32,8 @@ func CmdSendVerifiableCredential() *cobra.Command {
 			}
 
 			sender := clientCtx.GetFromAddress().String()
+            // TODO  hard code the channel port with setting for the relayer
+            // remove the need to input this
 			srcPort := args[0]
 			srcChannel := args[1]
 

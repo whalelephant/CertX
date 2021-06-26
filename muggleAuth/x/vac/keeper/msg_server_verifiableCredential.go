@@ -12,6 +12,11 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: logic before transmitting the packet
+    // 1. check if the message sender msg.Sender has been vaccinated in the credential module
+    // 2. if yes, then we move on, otherwise return error
+    // Here the issuer should be the healthauth did
+    // the signature is the healthauth signing the message, the issuer... might have to be the pk, since now we are using address
+    // message { subject, verifier, issuer, claim }
     var issuer string
     var signature string
 

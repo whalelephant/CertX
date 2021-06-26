@@ -73,7 +73,9 @@ func (k Keeper) OnRecvProofPacket(ctx sdk.Context, packet channeltypes.Packet, d
 		return packetAck, err
 	}
 
-	// TODO: packet reception logic
+	// TODO:  we will store this in `recvProof` keeper to be queried
+    // Before storing, we must verify the signature is correct for the issuer
+    // Happy path only 
 
 	return packetAck, nil
 }
