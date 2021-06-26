@@ -12,9 +12,9 @@ import (
 func (k msgServer) CreateCredential(goCtx context.Context, msg *types.MsgCreateCredential) (*types.MsgCreateCredentialResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-    var issuerDid string;
-    issuerDid = "did:muggleAuth:"
-    issuerDid += msg.Creator[6:];
+	var issuerDid string
+	issuerDid = "did:muggleAuth:"
+	issuerDid += msg.Creator[6:]
 
 	id := k.AppendCredential(
 		ctx,

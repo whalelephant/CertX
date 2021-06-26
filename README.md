@@ -5,7 +5,7 @@ This project is designed to demostrate the use of IBC between different zones in
 
 ## Motivation
 
-As we all become increasing aware of the risk of having our privacy taken away whilst demanding interoperability between systems,
+As we all become increasingly aware of the risk of having our privacy taken away whilst demanding interoperability between systems,
 a single entitle or even blockchain providing the the single source of truth is no longer satisfactory.
 
 This is where IBC becomes a critical component on which the future is built on.
@@ -34,7 +34,7 @@ We follow W3C recommendations of Verifiable Credential. A summary of the [roles]
 - *Verifier*: A role an entity performs by receiving one or more verifiable credentials, optionally inside a verifiable presentation, for processing. Example verifiers include employers, security personnel, and websites.
 - *Verifiable data registry*: A role a system might perform by mediating the creation and verification of identifiers, keys, and other relevant data, such as revocation registries, issuer public keys, and so on, which might be required to use verifiable credentials.  Example verifiable data registries include trusted databases, decentralized databases, government ID databases
 
-We restrict ourselve to provide, to all the users (Issuer, Holder, Verifier), the same interface as this model, i.e. only communicating with a Verifiable data registry.
+We restrict ourselves to provide, to all the users (Issuer, Holder, Verifier), the same interface as this model, i.e. only communicating with a Verifiable data registry.
 
 However, they may or may not communicate to the **same** verifiable data registry and this is where IBC connects the different services provided by the registry.
 This is demonstrated here:
@@ -46,7 +46,7 @@ This is demonstrated here:
 
 ### Role of CertX
 
-In all use case, **CertX** acts as a proofs provider. The proofs may be plain text or encrypted.
+In all use cases, **CertX** acts as a proofs provider. The proofs may be plain text or encrypted.
 **CertX** itself does not provide any recognition or list of authorities to trust etc.
 It is the verifiers' choice as to if a proof is valid / useful or not.
 
@@ -65,12 +65,12 @@ This usage of this service is strictly with IBC.
 
 - Alice wants to demonstrate to a restaurant that she has been fully vaccinated.
 - The restaurant does not need to know who Alice is other than the fact she has been vaccinated.
-- Alice does not want to reused an the identity for the restaurant for other services as she does not want to be tracked.
+- Alice does not want to reused the identity for the restaurant for other services as she does not want to be tracked.
 
 ### MuggleAuth (Issuer Zone)
 
 This represents the authorities for muggles (non-magical humans).
-For example, it might be a blockchain that stores and provide verifiable credential for registered citizens,
+For example, it might be a blockchain that stores and provides verifiable credential for registered citizens,
 such as driver license, health record, and in this case, a vaccination record.
 
 With potentially sensitive data, this blockchain is considered private.
@@ -83,28 +83,6 @@ This is a publicly accessible Blockchain to store proofs.
 
 Please refer to `./certx/readme.md` for details
 
-#### CertX Module
-
-The `CertX Module` simple receives IBC messages from Issuer Zones and records the proofs.
-
-#### CertX Types
-
-```sh
-VerifiableCredential {
-    # The identifier for the verifier, e.g. Alice's new did created for the retaurant
-    subject: did,
-    # Verifier this proof is meant to be for, e.g. restaurant
-    verifier: did,
-    # Issuer of this proof, e.g. health authority
-    issuer: did 
-    # Actual claim, e.g. number of vaccination recieved or simply fully / partial / none
-    # (In the case that types of vaccine have different number requirements, should not disclose)
-    claim: some_claim_description,
-    # Signature of the Issuer and related metadata
-    signature: signature_info 
-}
-```
-
 ## Use case 2 Ministry of Magic Employment records
 
 TODO
@@ -112,4 +90,3 @@ TODO
 ## Use case 3 Medical records
 
 TODO
-

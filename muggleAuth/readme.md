@@ -8,8 +8,6 @@ such as driver license, health record, and in this case, a vaccination record.
 
 With potentially sensitive data, this blockchain is considered private.
 
-Please refer to `./muggleAuth/readme.md` for details
-
 ### Vac Module
 
 The `Vac Module` provides states that stores (1) the credentials and (2) the proof for requested claims from muggles.
@@ -33,6 +31,25 @@ Credential: {
     claim: Int 
 }
 
+ProofRecord {
+    # message, in this case it is not encrypted
+    message: {
+        # The known identifier, e.g. Alice's muggle did
+        holder: did,
+        # The identifier for the verifier, e.g. Alice's new did created for the restaurant
+        subject: did,
+        # Verifier this proof is meant to be for, e.g. restaurant
+        verifier: did,
+        # Issuer of this proof, e.g. health authority
+        issuer: did 
+        # Actual claim, e.g. number of vaccination recieved or simply fully / partial / none
+        # (In the case that types of vaccine have different number requirements, should not disclose)
+        claim: some_claim_description,
+    },
+    # Signature of the message (in plain text) and related metadata
+    signature: signature_info 
+}
+
 ProofRequest {
     message: {
         # The known identifier, e.g. Alice's muggle did
@@ -48,25 +65,8 @@ ProofRequest {
     signature: signature_info 
 }
 
-ProofRecord {
-    # message, in this case it is not encrypted
-    message: {
-        # The known identifier, e.g. Alice's muggle did
-        holder: did,
-        # The identifier for the verifier, e.g. Alice's new did created for the retaurant
-        subject: did,
-        # Verifier this proof is meant to be for, e.g. restaurant
-        verifier: did,
-        # Issuer of this proof, e.g. health authority
-        issuer: did 
-        # Actual claim, e.g. number of vaccination recieved or simply fully / partial / none
-        # (In the case that types of vaccine have different number requirements, should not disclose)
-        claim: some_claim_description,
-    },
-    # Signature of the message (in plain text) and related metadata
-    signature: signature_info 
-}
 ```
+
 
 ## Get started
 
