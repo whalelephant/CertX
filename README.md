@@ -25,7 +25,7 @@ We use [*dencentralised identifiers*] for entities to ensure no social mapping, 
 
 It is important to conform to standards and practices that already works well and only make adjustments where needed. No point re-inventing the wheel!
 
-We follow W3C recommendations of Verfiable Credential. A summary of the [roles] defined are as such:
+We follow W3C recommendations of Verifiable Credential. A summary of the [roles] defined are as such:
 
 ![w3c_defined_vc](./w3c_defined_vc.png)
 
@@ -55,13 +55,13 @@ This usage of this service is strictly with IBC.
 
 [roles]: https://www.w3.org/TR/vc-data-model/#roles
 [*dencentralised identifiers*]: https://www.w3.org/TR/did-core/
-[Use Case 1]: (#user-case-1:-vaccination-records)
-[Use Case 2]: (#user-case-2:-employment-records)
-[Use Case 3]: (#user-case-3:-medical-records)
+[Use Case 1]: #use-case-1-muggles-vaccination-records
+[Use Case 2]: #use-case-2-ministry-of-magic-employment-records
+[Use Case 3]: #use-case-3-medical-records
 
 ---
 
-## Use case 1: Vaccination records
+## Use case 1 Muggles Vaccination records
 
 - Alice wants to demonstrate to a restaurant that she has been fully vaccinated.
 - The restaurant does not need to know who Alice is other than the fact she has been vaccinated.
@@ -160,11 +160,11 @@ VerifiableCredential {
 }
 ```
 
-## Use case 2: Employment records
+## Use case 2 Ministry of Magic Employment records
 
 TODO
 
-## Use case 3: Medical records
+## Use case 3 Medical records
 
 TODO
 
