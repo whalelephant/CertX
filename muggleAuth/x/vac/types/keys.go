@@ -36,3 +36,8 @@ const (
 	CredentialKey      = "Credential-value-"
 	CredentialCountKey = "Credential-count-"
 )
+
+const (
+	ProofKey= "Proof-value-"
+	ProofCountKey= "Proof-count-"
+)

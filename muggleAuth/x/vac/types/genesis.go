@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		PortId: PortID,
 		// this line is used by starport scaffolding # genesis/types/default
+ProofList: []*Proof{},
 		CredentialList: []*Credential{},
 	}
 }
@@ -25,6 +26,15 @@ func (gs GenesisState) Validate() error {
 	}
 
 	// this line is used by starport scaffolding # genesis/types/validate
+// Check for duplicated ID in proof
+proofIdMap := make(map[uint64]bool)
+
+for _, elem := range gs.ProofList {
+	if _, ok := proofIdMap[elem.Id]; ok {
+		return fmt.Errorf("duplicated id for proof")
+	}
+	proofIdMap[elem.Id] = true
+}
 	// Check for duplicated ID in credential
 	credentialIdMap := make(map[uint64]bool)
 

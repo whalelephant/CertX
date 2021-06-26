@@ -1,0 +1,17 @@
+syntax = "proto3";
+package whalelephant.muggleAuth.vac;
+
+option go_package = "github.com/whalelephant/certX/muggleAuth/x/vac/types";
+
+import "gogoproto/gogo.proto";
+
+message Proof {
+  string creator = 1;
+  uint64 id = 2;
+  string holder = 3; 
+  string issuer = 4; 
+  string verifier = 5; 
+  string subject = 6; 
+  string signature = 7; 
+  string claim = 8; 
+}

@@ -10,6 +10,14 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// this line is used by starport scaffolding # genesis/module/init
+// Set all the proof
+for _, elem := range genState.ProofList {
+	k.SetProof(ctx, *elem)
+}
+
+// Set proof count
+k.SetProofCount(ctx, genState.ProofCount)
+
 	// Set all the credential
 	for _, elem := range genState.CredentialList {
 		k.SetCredential(ctx, *elem)
@@ -36,6 +44,16 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 
 	// this line is used by starport scaffolding # genesis/module/export
+// Get all proof
+proofList := k.GetAllProof(ctx)
+for _, elem := range proofList {
+	elem := elem
+	genesis.ProofList = append(genesis.ProofList, &elem)
+}
+
+// Set the current count
+genesis.ProofCount = k.GetProofCount(ctx)
+
 	// Get all credential
 	credentialList := k.GetAllCredential(ctx)
 	for _, elem := range credentialList {
