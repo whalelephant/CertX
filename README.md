@@ -6,7 +6,7 @@ This project is designed to demostrate the use of IBC between different zones in
 ## Motivation
 
 As we all become increasingly aware of the risk of having our privacy taken away whilst demanding interoperability between systems,
-a single entitle or even blockchain providing the the single source of truth is no longer satisfactory.
+a single entitle or even blockchain providing the single source of truth is no longer satisfactory.
 
 This is where IBC becomes a critical component on which the future is built on.
 
@@ -48,7 +48,7 @@ This is demonstrated here:
 
 In all use cases, **CertX** acts as a proofs provider. The proofs may be plain text or encrypted.
 **CertX** itself does not provide any recognition or list of authorities to trust etc.
-It is the verifiers' choice as to if a proof is valid / useful or not.
+It is the verifier's choice as to if a proof is valid / useful or not.
 
 **Critically**: Either the holder or the verifier needs to register on **CertX** as this will be unnecessary friction.
 This usage of this service is strictly with IBC.

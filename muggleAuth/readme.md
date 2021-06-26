@@ -3,16 +3,16 @@
 ## MuggleAuth (Issuer Zone)
 
 This represents the authorities for muggles (non-magical humans).
-For example, it might be a blockchain that stores and provide verifiable credential for registered citizens,
+For example, it might be a blockchain that stores and provides verifiable credentials for registered citizens,
 such as driver license, health record, and in this case, a vaccination record.
 
 With potentially sensitive data, this blockchain is considered private.
 
 ### Vac Module
 
-The `Vac Module` provides states that stores (1) the credentials and (2) the proof for requested claims from muggles.
+The `Vac Module` provides state that stores (1) the credential and (2) the proof for claims requested by muggles.
 
-The first state is updated by direct messages to the module and is the lookup to facilitate the provision of proof.
+The first state is updated by direct messages to the module and is the lookup to facilitate the provisioning of the proof.
 
 The second state is a record that allows for the Issuer to:
 
@@ -27,7 +27,7 @@ Credential: {
     issuer: did,
     # Subject the claim is about, e.g. Alice's muggle did
     holder:did,
-    # Actual claim, e.g. number of vaccination recieved
+    # Actual claim, e.g. vaccination record recieved
     claim: Int 
 }
 
@@ -42,7 +42,7 @@ ProofRecord {
         verifier: did,
         # Issuer of this proof, e.g. health authority
         issuer: did 
-        # Actual claim, e.g. number of vaccination recieved or simply fully / partial / none
+        # Actual claim, e.g.  vaccination record recieved or simply fully / partial / none
         # (In the case that types of vaccine have different number requirements, should not disclose)
         claim: some_claim_description,
     },
@@ -54,7 +54,7 @@ ProofRequest {
     message: {
         # The known identifier, e.g. Alice's muggle did
         holder: did,
-        # The identifier for the verifier, e.g. Alice's new did created for the retaurant
+        # The identifier for the verifier, e.g. Alice's new did created for the restaurant
         subject: did,
         # Verifier this proof is meant to be for, e.g. restaurant
         verifier: did,
