@@ -22,9 +22,7 @@ message MsgSendVerifiableCredential {
   uint64 timeoutTimestamp = 4;
   string subject = 5;
   string verifier = 6;
-  string issuer = 7;
-  string claim = 8;
-  string signature = 9;
+  string claim = 7;
 }
 
 message MsgSendVerifiableCredentialResponse {

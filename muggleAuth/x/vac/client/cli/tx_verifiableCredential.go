@@ -15,15 +15,13 @@ var _ = strconv.Itoa(0)
 
 func CmdSendVerifiableCredential() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-verifiableCredential [src-port] [src-channel] [subject] [verifier] [issuer] [claim] [signature]",
+		Use:   "send-verifiableCredential [src-port] [src-channel] [subject] [verifier] [claim]",
 		Short: "Send a verifiableCredential over IBC",
 		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsSubject := string(args[2])
 			argsVerifier := string(args[3])
-			argsIssuer := string(args[4])
-			argsClaim := string(args[5])
-			argsSignature := string(args[6])
+			argsClaim := string(args[4])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -47,7 +45,7 @@ func CmdSendVerifiableCredential() *cobra.Command {
 				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
 			}
 
-			msg := types.NewMsgSendVerifiableCredential(sender, srcPort, srcChannel, timeoutTimestamp, string(argsSubject), string(argsVerifier), string(argsIssuer), string(argsClaim), string(argsSignature))
+			msg := types.NewMsgSendVerifiableCredential(sender, srcPort, srcChannel, timeoutTimestamp, string(argsSubject), string(argsVerifier), string(argsClaim))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

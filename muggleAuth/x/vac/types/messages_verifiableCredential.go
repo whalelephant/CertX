@@ -14,9 +14,7 @@ func NewMsgSendVerifiableCredential(
 	timeoutTimestamp uint64,
 	subject string,
 	verifier string,
-	issuer string,
 	claim string,
-	signature string,
 ) *MsgSendVerifiableCredential {
 	return &MsgSendVerifiableCredential{
 		Sender:           sender,
@@ -25,9 +23,7 @@ func NewMsgSendVerifiableCredential(
 		TimeoutTimestamp: timeoutTimestamp,
 		Subject:          subject,
 		Verifier:         verifier,
-		Issuer:           issuer,
 		Claim:            claim,
-		Signature:        signature,
 	}
 }
 

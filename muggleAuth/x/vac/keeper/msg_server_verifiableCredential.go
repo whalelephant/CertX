@@ -12,15 +12,17 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: logic before transmitting the packet
+    var issuer string
+    var signature string
 
 	// Construct the packet
 	var packet types.VerifiableCredentialPacketData
 
 	packet.Subject = msg.Subject
 	packet.Verifier = msg.Verifier
-	packet.Issuer = msg.Issuer
+	packet.Issuer = issuer 
 	packet.Claim = msg.Claim
-	packet.Signature = msg.Signature
+	packet.Signature = signature
 
 	// Transmit the packet
 	err := k.TransmitVerifiableCredentialPacket(
