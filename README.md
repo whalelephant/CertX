@@ -6,7 +6,7 @@ This project is designed to demostrate the use of IBC between different zones in
 ## Motivation
 
 As we all become increasingly aware of the risk of having our privacy taken away whilst demanding interoperability between systems,
-a single entitle or even blockchain providing the single source of truth is no longer satisfactory.
+a single entity or even blockchain providing the single source of truth is no longer satisfactory.
 
 This is where IBC becomes a critical component on which the future is built on.
 
