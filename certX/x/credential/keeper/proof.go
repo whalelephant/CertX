@@ -73,9 +73,16 @@ func (k Keeper) OnRecvProofPacket(ctx sdk.Context, packet channeltypes.Packet, d
 		return packetAck, err
 	}
 
+    // type ProofPacketData struct {
+    // 	Subject   string `protobuf:"bytes,1,opt,name=subject,proto3" json:"subject,omitempty"`
+    // 	Verifier  string `protobuf:"bytes,2,opt,name=verifier,proto3" json:"verifier,omitempty"`
+    // 	Issuer    string `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`
+    // 	Claim     string `protobuf:"bytes,4,opt,name=claim,proto3" json:"claim,omitempty"`
+    // 	Signature string `protobuf:"bytes,5,opt,name=signature,proto3" json:"signature,omitempty"`
+    // }
 	// TODO:  we will store this in `recvProof` keeper to be queried
     // Before storing, we must verify the signature is correct for the issuer
-    // Happy path only 
+    // Happy path only
 
 	return packetAck, nil
 }

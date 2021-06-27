@@ -95,6 +95,6 @@ muggleAuthd keys list --home .home
 muggleAuthd tx vac create-credential "_healthauth" "did:muggleAuth:pub1addwnpepq0cxxuncdddefhwyqj02zy8xlhyk775ud4t7852tzw6kl8v2t6wqjrwtl75" "2" --from  healthauth --home .home
 
 # sends the verifiable credential
-muggleAuthd tx vac send-verifiableCredential 1 1 did:certX:restaurant81 vac --home .home
+muggleAuthd tx vac send-verifiableCredential <port> <channel> did:certX:restaurant81 0 --home .home
 
 ```
