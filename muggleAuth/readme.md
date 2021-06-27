@@ -83,3 +83,18 @@ Your blockchain in development can be configured with `config.yml`. To learn mor
 ## Launch
 
 To launch your blockchain live on mutliple nodes use `starport network` commands. Learn more about [Starport Network](https://github.com/tendermint/spn).
+
+## Useful cmd
+
+```sh
+# list all keys
+muggleAuthd keys list --home .home
+
+# create record from healthauth for alice
+# the first arg is not actually used since it is signed by healthauth
+muggleAuthd tx vac create-credential "_healthauth" "did:muggleAuth:pub1addwnpepq0cxxuncdddefhwyqj02zy8xlhyk775ud4t7852tzw6kl8v2t6wqjrwtl75" "2" --from  healthauth --home .home
+
+# sends the verifiable credential
+muggleAuthd tx vac send-verifiableCredential 1 1 did:certX:restaurant81 vac --home .home
+
+```
