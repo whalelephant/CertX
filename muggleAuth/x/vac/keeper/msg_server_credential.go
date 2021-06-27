@@ -12,9 +12,10 @@ import (
 func (k msgServer) CreateCredential(goCtx context.Context, msg *types.MsgCreateCredential) (*types.MsgCreateCredentialResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+    // store the addr and correction https://en.bitcoin.it/wiki/BIP_0173#Bech32
 	var issuerDid string
 	issuerDid = "did:muggleAuth:"
-	issuerDid += msg.Creator[6:]
+	issuerDid += msg.Creator[7:]
 
 	id := k.AppendCredential(
 		ctx,

@@ -8,8 +8,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	// "github.com/cosmos/cosmos-sdk/client/tx"
-	channelutils "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/client/utils"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	// channelutils "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/client/utils"
 	"github.com/whalelephant/certX/muggleAuth/x/vac/types"
    	"github.com/cosmos/cosmos-sdk/crypto/hd"
  	bip39 "github.com/cosmos/go-bip39"
@@ -41,6 +41,7 @@ func CmdSendVerifiableCredential() *cobra.Command {
 
             buf := bufio.NewReader(cmd.InOrStdin())
             backend := "test"
+
         	kr, err = keyring.New(sdk.KeyringServiceName(), backend, clientCtx.KeyringDir, buf)
         
         	if err != nil {
@@ -50,6 +51,7 @@ func CmdSendVerifiableCredential() *cobra.Command {
             subject, err := createNewIdentifier(argsVerifier, kr)
 
             fmt.Println("subject: ", subject)
+            fmt.Println("keyringDir", clientCtx.KeyringDir)
 
             // TODO  hard code the channel port with setting for the relayer
             // remove the need to input this
@@ -61,20 +63,19 @@ func CmdSendVerifiableCredential() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)
-			if err != nil {
-				return err
-			}
-			if timeoutTimestamp != 0 {
-				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
-			}
+			//consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)
+			//if err != nil {
+			//	return err
+			//}
+			//if timeoutTimestamp != 0 {
+			//	timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
+			//}
 
-			msg := types.NewMsgSendVerifiableCredential(sender, srcPort, srcChannel, timeoutTimestamp, string(subject), string(argsVerifier), string(argsClaim))
+			msg := types.NewMsgSendVerifiableCredential(sender, srcPort, srcChannel, timeoutTimestamp, subject, string(argsVerifier), string(argsClaim))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
-			// return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-            return nil
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
 
