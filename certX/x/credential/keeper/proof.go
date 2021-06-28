@@ -91,7 +91,7 @@ func (k Keeper) OnRecvProofPacket(ctx sdk.Context, packet channeltypes.Packet, d
     msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
 
     var key secp256k1.PubKey
-    key.Key = c_pubkey;
+    key.Key = pubkey;
     addr := key.Address().String();
 
     // Issuer did:method:identifier (identifier is address in Bech32 format)
