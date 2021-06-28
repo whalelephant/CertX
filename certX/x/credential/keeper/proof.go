@@ -2,12 +2,17 @@ package keeper
 
 import (
 	"errors"
+    "encoding/hex"
+    "strings"
+    "fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client/types"
 	channeltypes "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/types"
 	host "github.com/cosmos/cosmos-sdk/x/ibc/core/24-host"
+
+    "github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/whalelephant/certX/certX/x/credential/types"
 )
 
@@ -73,18 +78,45 @@ func (k Keeper) OnRecvProofPacket(ctx sdk.Context, packet channeltypes.Packet, d
 		return packetAck, err
 	}
 
-    // type ProofPacketData struct {
-    // 	Subject   string `protobuf:"bytes,1,opt,name=subject,proto3" json:"subject,omitempty"`
-    // 	Verifier  string `protobuf:"bytes,2,opt,name=verifier,proto3" json:"verifier,omitempty"`
-    // 	Issuer    string `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`
-    // 	Claim     string `protobuf:"bytes,4,opt,name=claim,proto3" json:"claim,omitempty"`
-    // 	Signature string `protobuf:"bytes,5,opt,name=signature,proto3" json:"signature,omitempty"`
-    // }
-	// TODO:  we will store this in `recvProof` keeper to be queried
-    // Before storing, we must verify the signature is correct for the issuer
-    // Happy path only
 
-	return packetAck, nil
+    // This is to test the code on the other side
+    decodedSig, err := hex.DecodeString(data.GetSignature());
+    if err != nil {
+        fmt.Println("sig not decodable: ", err);
+        return packetAck, err
+    }
+
+    pubkey := decodedSig[0:33];
+    sig := decodedSig[33:]
+    msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
+
+    var key secp256k1.PubKey
+    key.Key = c_pubkey;
+    addr := key.Address().String();
+
+    // Issuer did:method:identifier (identifier is address in Bech32 format)
+    didComponents := strings.Split(data.GetIssuer(), ":")
+    fmt.Println("didC[2]: ", didComponents[2]);
+
+    if !key.VerifySignature([]byte(msg), sig) {
+        fmt.Println("sig not verified: ");
+		return packetAck, err 
+    } else if addr != didComponents[2] {
+        fmt.Println("signer not issuer");
+		return packetAck, err 
+    } else {
+        var recvProof types.RecvProof
+        recvProof.Creator = packet.GetSourcePort() + packet.GetDestChannel()
+        recvProof.Issuer = data.GetIssuer()
+        recvProof.Subject = data.GetSubject()
+        recvProof.Verifier = data.GetVerifier()
+        recvProof.Claim = data.GetClaim()
+        recvProof.Signature = data.GetSignature()
+        // can return ID as packetAck
+        _ = k.AppendRecvProof(ctx, recvProof)
+        return packetAck, nil
+    }
+
 }
 
 // OnAcknowledgementProofPacket responds to the the success or failure of a packet

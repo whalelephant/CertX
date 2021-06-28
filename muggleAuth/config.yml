@@ -22,4 +22,4 @@ init:
 genesis:
   app_state:
     vac:
-      credentialList: [{"claim":2,"creator":"cosmos1d3569vdcjt2cjff2mmqlk782hs07pjhr0mq0g3","holder":"did:muggleAuth:fl5492k6uuqgent27lyp9tfwz5te50hm425k4f","id":"0","issuer":"did:muggleAuth:d3569vdcjt2cjff2mmqlk782hs07pjhr0mq0g3"}]
+      credentialList: [{"claim":2,"creator":"cosmos1d3569vdcjt2cjff2mmqlk782hs07pjhr0mq0g3","holder":"did:muggleAuth:fl5492k6uuqgent27lyp9tfwz5te50hm425k4f","id":"0","issuer":"did:muggleAuth:6C69A2B1B892D589252ADEC1FB78EABC1FE0CAE3"}]
