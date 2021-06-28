@@ -1,0 +1,25 @@
+version: 1
+
+chains:
+  certX:
+    chain_id: certX
+    # Bech32 prefix for addresses
+    prefix: cosmos
+    # This determines the gas payments we make (and defines the fee token)
+    gas_price: 0.0001stake
+    ics20_port: 'credential'
+    # You can include multiple RPC endpoints and it will rotate through them if
+    # one is down (TODO)
+    rpc:
+      - http://0.0.0.0:36657
+  muggleAuth:
+    chain_id: muggleAuth 
+    # Bech32 prefix for addresses
+    prefix: cosmos
+    # This determines the gas payments we make (and defines the fee token)
+    gas_price: 0.0001stake
+    ics20_port: 'vac'
+    # You can include multiple RPC endpoints and it will rotate through them if
+    # one is down (TODO)
+    rpc:
+      - http://0.0.0.0:26657

@@ -17,7 +17,7 @@ const (
 	MemStoreKey = "mem_credential"
 
 	// Version defines the current version the IBC module supports
-	Version = "credential-1"
+	Version = "vac-1"
 
 	// PortID is the default port id that module binds to
 	PortID = "credential"

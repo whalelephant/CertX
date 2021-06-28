@@ -1,10 +1,11 @@
 accounts:
-  - name: alice
+  - name: bob 
     coins: ["1000token", "100000000stake"]
-  - name: bob
-    coins: ["500token"]
+  - name: relayer
+    address: "cosmos1rjnx254jxdhe52yh6ek68c457rq5j956hwxmr8"
+    coins: ["100000000stake"]
 validator:
-  name: alice
+  name: bob 
   staked: "100000000stake"
 client:
   vuex:
@@ -13,4 +14,11 @@ faucet:
   name: bob 
   coins: ["5token"]
 init: 
-  home: "./.home/"
+  chain_id: "certX"
+  home: ".home"
+host:
+  rpc: ":36657"
+  p2p: ":36658"
+  prof: ":7060"
+  grpc: ":10091"
+  api: ":2337"
