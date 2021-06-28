@@ -2,8 +2,10 @@ package keeper
 
 import (
 	"context"
+    "strings"
 	"fmt"
 
+    "github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/whalelephant/certX/muggleAuth/x/vac/types"
@@ -12,10 +14,25 @@ import (
 func (k msgServer) CreateCredential(goCtx context.Context, msg *types.MsgCreateCredential) (*types.MsgCreateCredentialResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-    // store the addr and correction https://en.bitcoin.it/wiki/BIP_0173#Bech32
+    // store the standard pubkey as the identifier secp256k1 
+    // in real did, we will have this in the did doc
 	var issuerDid string
 	issuerDid = "did:muggleAuth:"
-	issuerDid += msg.Creator[7:]
+    creatorAdd, err := sdk.AccAddressFromBech32(msg.Creator) 
+    if err != nil {
+        return nil, err
+    }
+
+    // HACK WARNING: This keypath is the same as the client, demo purpose only! 
+    // reader is not used since we are using test backend (not protected)
+    keyringDir:= ".home"
+    backend := "test"
+    reader := strings.NewReader("")
+    kr, err := keyring.New(sdk.KeyringServiceName(), backend, keyringDir, reader)
+    keyInfo, err := kr.KeyByAddress(creatorAdd)
+    issuerDid += keyInfo.GetPubKey().Address().String()
+
+    fmt.Println("issuerDid: ", issuerDid)
 
 	id := k.AppendCredential(
 		ctx,
