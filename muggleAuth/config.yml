@@ -8,6 +8,9 @@ accounts:
   - name: bob
     coins: ["5000token"]
     mnemonic: "hurdle cactus weekend bamboo admit soap usual nerve arrive message final hedgehog drop safe drum wreck kit online clever radio gallery jelly blame one"
+  - name: relayer
+    address: "cosmos1rjnx254jxdhe52yh6ek68c457rq5j956hwxmr8"
+    coins: ["100000000stake"]
 validator:
   name: healthauth 
   staked: "100000000stake"
@@ -17,9 +20,16 @@ client:
 faucet:
   name: bob 
   coins: ["5token"]
+  host: ":4501"
 init:
   home: ".home"
 genesis:
   app_state:
     vac:
       credentialList: [{"claim":2,"creator":"cosmos1d3569vdcjt2cjff2mmqlk782hs07pjhr0mq0g3","holder":"did:muggleAuth:fl5492k6uuqgent27lyp9tfwz5te50hm425k4f","id":"0","issuer":"did:muggleAuth:d3569vdcjt2cjff2mmqlk782hs07pjhr0mq0g3"}]
+host:
+  rpc: ":26658"
+  p2p: ":26659"
+  prof: ":6061"
+  grpc: ":9092"
+  api: ":1338"

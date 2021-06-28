@@ -3,6 +3,9 @@ accounts:
     coins: ["1000token", "100000000stake"]
   - name: bob
     coins: ["500token"]
+  - name: relayer
+    address: "cosmos1rjnx254jxdhe52yh6ek68c457rq5j956hwxmr8"
+    coins: ["100000000stake"]
 validator:
   name: alice
   staked: "100000000stake"
@@ -14,3 +17,9 @@ faucet:
   coins: ["5token"]
 init: 
   home: "./.home/"
+host:
+  rpc: ":26657"
+  p2p: ":26658"
+  prof: ":6060"
+  grpc: ":9091"
+  api: ":1337"
