@@ -6,9 +6,6 @@ import (
     "strconv"
     "strings"
     "encoding/hex"
-
-    // "github.com/cosmos/cosmos-sdk/crypto/keyring"
-    // ed25519 "github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
     "github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -24,6 +21,7 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 
     claimId, err := strconv.Atoi(msg.Claim)
     if err != nil {
+        fmt.Println("cannot convert claim: ", err);
         return nil, err
     } 
 
@@ -58,18 +56,19 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
     keyringDir:= ".home"
     backend := "test"
     reader := strings.NewReader("")
+
     // The signer should be the creator of the credential
     signerAddr, err := sdk.AccAddressFromBech32(claim.GetCreator()) 
     kr, err := keyring.New(sdk.KeyringServiceName(), backend, keyringDir, reader)
 
-    // sig is 64 bytes and pubkey is 32 bytes
-    // total sent is 96 bytes
     sig, pubkey, err := kr.SignByAddress(signerAddr, []byte(credentialMsg))
     if err != nil {
         fmt.Println("Cannot sign");
         return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cannot sign")
     }
 
+    // secp256k1 pubkey is 33 bytes
+    // and sig is 64 bytes
     sigStr := hex.EncodeToString(pubkey.Bytes())  + hex.EncodeToString(sig)
 
     // Construct the proof and store it
