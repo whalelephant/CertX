@@ -96,7 +96,8 @@ func CmdShowECredentialRecord() *cobra.Command {
                 if err != nil {
                     fmt.Println(err)
                 }
-                fmt.Println("msg: ", string(plaintext))
+                fmt.Println("sig: ", string(plaintext[0:64]))
+                fmt.Println("msg: ", string(plaintext[64:]))
             }
             return clientCtx.PrintProto(res)
 		},

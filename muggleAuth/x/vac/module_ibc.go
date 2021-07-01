@@ -193,7 +193,7 @@ func (am AppModule) OnAcknowledgementPacket(
 	}
 	var modulePacketData types.VacPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		// return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
 	var eventType string

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"encoding/hex"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"strings"
@@ -79,39 +79,32 @@ func (k Keeper) OnRecvVerifiableCredentialPacket(ctx sdk.Context, packet channel
 
 	fmt.Println("Got VerifiableCredentialPacketData")
 
-	// Unable to send full signature during Hackathon
-    // Ran into relayer error
-    // `Please ensure the path and value are both correct.: invalid proof`
+	fmt.Println("checking sign")
+	decodedSig, err := base64.StdEncoding.DecodeString(data.GetSignature())
+	if err != nil {
+		fmt.Println("sig not decodable: ", err)
+		return packetAck, err
+	}
 
-	// Created a branch for not verifiying before store
-	// 33 secp256k1 pubkey len; 64 sign len
-	if len(data.GetSignature()) == 33+64 {
-		fmt.Println("checking sign")
-		decodedSig, err := hex.DecodeString(data.GetSignature())
-		if err != nil {
-			fmt.Println("sig not decodable: ", err)
-			return packetAck, err
-		}
+    // 33 secp256k1 pubkey len; 64 sign len
+	pubkey := decodedSig[0:33]
+	sig := decodedSig[33:]
+	msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
 
-		pubkey := decodedSig[0:33]
-		sig := decodedSig[33:]
-		msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
+	var key secp256k1.PubKey
+	key.Key = pubkey
+	addr := key.Address().String()
 
-		var key secp256k1.PubKey
-		key.Key = pubkey
-		addr := key.Address().String()
+	// Issuer did:method:identifier (identifier is address in Bech32 format)
+	didComponents := strings.Split(data.GetIssuer(), ":")
+	fmt.Println("didC[2]: ", didComponents[2])
 
-		// Issuer did:method:identifier (identifier is address in Bech32 format)
-		didComponents := strings.Split(data.GetIssuer(), ":")
-		fmt.Println("didC[2]: ", didComponents[2])
-
-		if !key.VerifySignature([]byte(msg), sig) {
-			fmt.Println("sig not verified: ")
-			return packetAck, err
-		} else if addr != didComponents[2] {
-			fmt.Println("signer not issuer")
-			return packetAck, err
-		}
+	if !key.VerifySignature([]byte(msg), sig) {
+		fmt.Println("sig not verified: ")
+		return packetAck, err
+	} else if addr != didComponents[2] {
+		fmt.Println("signer not issuer")
+		return packetAck, err
 	}
 
 	var recvProof types.Credential

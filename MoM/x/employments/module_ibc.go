@@ -187,7 +187,7 @@ func (am AppModule) OnAcknowledgementPacket(
 	}
 
 	var modulePacketData types.EmploymentsPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 

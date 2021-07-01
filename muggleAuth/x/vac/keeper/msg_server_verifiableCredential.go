@@ -92,7 +92,8 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
     // During the time of the hackathon only a portion of the sig
     // were include, as ran into error
     // `Please ensure the path and value are both correct.: invalid proof`
-    packet.Signature = sigStr[0:4]
+    packet.Signature = sigStr
+    fmt.Println("packet sig len: ", len(sigStr))
  
 	// Transmit the packet
 	e := k.TransmitVerifiableCredentialPacket(

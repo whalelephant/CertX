@@ -77,37 +77,6 @@ func (k Keeper) OnRecvECredentialPacket(ctx sdk.Context, packet channeltypes.Pac
     fmt.Println("Got eCredentialPacket")
     fmt.Println("total Length of Claim: ", len(data.GetClaim()))
 
-    // At least size of the signature
-    // text:= append(sig, recordStr...)
-	// if len(data.GetClaim()) > 64 {
-	// 	fmt.Println("checking sign")
-	// 	decodedSig, err := hex.DecodeString(data.GetSignature())
-	// 	if err != nil {
-	// 		fmt.Println("sig not decodable: ", err)
-	// 		return packetAck, err
-	// 	}
-
-	// 	pubkey := decodedSig[0:33]
-	// 	sig := decodedSig[33:]
-	// 	msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
-
-	// 	var key secp256k1.PubKey
-	// 	key.Key = pubkey
-	// 	addr := key.Address().String()
-
-	// 	// Issuer did:method:identifier (identifier is address in Bech32 format)
-	// 	didComponents := strings.Split(data.GetIssuer(), ":")
-	// 	fmt.Println("didC[2]: ", didComponents[2])
-
-	// 	if !key.VerifySignature([]byte(msg), sig) {
-	// 		fmt.Println("sig not verified: ")
-	// 		return packetAck, err
-	// 	} else if addr != didComponents[2] {
-	// 		fmt.Println("signer not issuer")
-	// 		return packetAck, err
-	// 	}
-	// }
-
 	var ecr types.ECredentialRecord
 	ecr.Creator = packet.GetSourcePort() + packet.GetDestChannel()
     ecr.Subject = data.GetSubject();

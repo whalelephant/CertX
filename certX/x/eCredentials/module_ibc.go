@@ -136,7 +136,7 @@ func (am AppModule) OnRecvPacket(
 	modulePacket channeltypes.Packet,
 ) (*sdk.Result, []byte, error) {
 	var modulePacketData types.ECredentialsPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		return nil, nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
