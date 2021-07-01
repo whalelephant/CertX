@@ -1,39 +1,58 @@
-# certx
+# certX
 
-**certx** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://github.com/tendermint/starport).
+## CertX Module
+
+The `CertX Module` simple receives IBC messages from Issuer Zones and records the proofs.
+
+## CertX Types
+
+```sh
+# Stores all crednetials that were received via IBC
+# note the original holder is not provided, only the new did
+Credential: {
+    # Verifier this proof is meant to be for, e.g. restaurant
+    verifier: did
+    # Issuer of the claim, e.g. Health Authority
+    issuer: did,
+    # Subject the claim is about, e.g. Alice's muggle did
+    subject:did,
+    # Actual claim, e.g. vaccination record recieved
+    claim: Int 
+}
+
+verifiableCredential {
+    # The identifier for the verifier, e.g. Alice's new did created for the retaurant
+    subject: did,
+    # Verifier this proof is meant to be for, e.g. restaurant
+    verifier: did,
+    # Issuer of this proof, e.g. health authority
+    issuer: did 
+    # Actual claim, e.g. vaccination record recieved or simply fully / partial / none
+    # (i.e. the issuer can obfuscate details if they see fit)
+    claim: some_claim_description,
+    # Signature of the Issuer and related metadata
+    # i.e. public key and signature for verification
+    signature: signature_info 
+}
+```
+
+**certX** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://github.com/tendermint/starport).
 
 ## Get started
 
-```
+```sh
 starport serve
 ```
 
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+`serve` command installs dependencies, builds, initializes and starts your blockchain in development.
 
 ## Configure
 
-Your blockchain in development can be configured with `config.yml`. To learn more, see the [Starport docs](https://docs.starport.network).
+Your blockchain in development can be configured with `config.yml`. To learn more see the [reference](https://github.com/tendermint/starport#documentation).
 
-## Launch
+## Useful cmd
 
-To launch your blockchain live on multiple nodes, use `starport network` commands. Learn more about [Starport Network](https://github.com/tendermint/spn).
-
-## Web Frontend
-
-Starport has scaffolded a Vue.js-based web app in the `vue` directory. Run the following commands to install dependencies and start the app:
-
+```sh
+# Query new credential from 
+certXd query credentials list-credential --node tcp://localhost:36657
 ```
-cd vue
-npm install
-npm run serve
-```
-
-The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Starport front-end development](https://github.com/tendermint/vue).
-
-## Learn more
-
-- [Starport](https://github.com/tendermint/starport)
-- [Starport Docs](https://docs.starport.network)
-- [Cosmos SDK documentation](https://docs.cosmos.network)
-- [Cosmos SDK Tutorials](https://tutorials.cosmos.network)
-- [Discord](https://discord.gg/W8trcGV)

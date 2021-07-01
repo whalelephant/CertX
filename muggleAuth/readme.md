@@ -26,20 +26,22 @@ The second state is a record that allows for the Issuer to:
 ### Vac Types
 
 ```sh
+# Stores all crednetials 
 Credential: {
+    # Verifier this proof is meant to be for, e.g. restaurant
+    verifier: did
     # Issuer of the claim, e.g. Health Authority
     issuer: did,
     # Subject the claim is about, e.g. Alice's muggle did
     holder:did,
     # Actual claim, e.g. vaccination record recieved
-    claim: Int 
+    claim: claim_string
 }
 
-ProofRecord {
+# Packets from other chains via IBC
+verifiableCredential {
     # message, in this case it is not encrypted
     message: {
-        # The known identifier, e.g. Alice's muggle did
-        holder: did,
         # The identifier for the verifier, e.g. Alice's new did created for the restaurant
         subject: did,
         # Verifier this proof is meant to be for, e.g. restaurant
@@ -51,21 +53,6 @@ ProofRecord {
         claim: some_claim_description,
     },
     # Signature of the message (in plain text) and related metadata
-    signature: signature_info 
-}
-
-ProofRequest {
-    message: {
-        # The known identifier, e.g. Alice's muggle did
-        holder: did,
-        # The identifier for the verifier, e.g. Alice's new did created for the restaurant
-        subject: did,
-        # Verifier this proof is meant to be for, e.g. restaurant
-        verifier: did,
-        # Reference to the claim 
-        claim: claim_id,
-    },
-    # Signature of the message signed by the holder and related metadata
     signature: signature_info 
 }
 
@@ -96,9 +83,9 @@ muggleAuthd keys list --home .home
 
 # create record from healthauth for alice
 # the first arg is not actually used since it is signed by healthauth
-muggleAuthd tx vac create-credential "_healthauth" "did:muggleAuth:pub1addwnpepq0cxxuncdddefhwyqj02zy8xlhyk775ud4t7852tzw6kl8v2t6wqjrwtl75" "2" --from  healthauth --home .home
+muggleAuthd tx vac create-credential "_healthauth" "did:muggleAuth:<some_address>" "2" --from  healthauth --home .home
 
-# sends the verifiable credential
-muggleAuthd tx vac send-verifiableCredential <port> <channel> did:certX:restaurant81 0 --home .home
+# sends the verifiable credential for verifier restaurant81
+muggleAuthd tx vac send-verifiableCredential <port> <channel> did:certX:restaurant81 0 --from alice --home .home
 
 ```

@@ -75,13 +75,13 @@ such as driver license, health record, and in this case, a vaccination record.
 
 With potentially sensitive data, this blockchain is considered private.
 
-Please refer to `./muggleAuth/readme.md` for details
+Please refer [muggleAuth README](./muggleAuth/readme.md) for details.
 
 ### CertX (Proofs Provider)
 
 This is a publicly accessible Blockchain to store proofs.
 
-Please refer to `./certx/readme.md` for details
+Please refer [certX README](./certX/readme.md) for details.
 
 ## Use case 2 Ministry of Magic Employment records
 
