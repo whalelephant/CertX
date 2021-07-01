@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	// channelutils "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/client/utils"
+	channelutils "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/client/utils"
 	"github.com/whalelephant/certX/muggleAuth/x/vac/types"
    	"github.com/cosmos/cosmos-sdk/crypto/hd"
  	bip39 "github.com/cosmos/go-bip39"
@@ -63,13 +63,13 @@ func CmdSendVerifiableCredential() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			//consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)
-			//if err != nil {
-			//	return err
-			//}
-			//if timeoutTimestamp != 0 {
-			//	timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
-			//}
+			consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)
+			if err != nil {
+				return err
+			}
+			if timeoutTimestamp != 0 {
+				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
+			}
 
 			msg := types.NewMsgSendVerifiableCredential(sender, srcPort, srcChannel, timeoutTimestamp, subject, string(argsVerifier), string(argsClaim))
 			if err := msg.ValidateBasic(); err != nil {
