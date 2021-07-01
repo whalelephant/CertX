@@ -1,0 +1,26 @@
+syntax = "proto3";
+package whalelephant.certx.eCredentials;
+
+option go_package = "github.com/whalelephant/certX/certX/x/eCredentials/types";
+
+message ECredentialsPacketData {
+    oneof packet {
+        NoData noData = 1;
+        // this line is used by starport scaffolding # ibc/packet/proto/field
+				ECredentialPacketData eCredentialPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
+    }
+}
+
+message NoData {
+}
+
+// this line is used by starport scaffolding # ibc/packet/proto/message
+// ECredentialPacketData defines a struct for the packet payload
+message ECredentialPacketData {
+	  string subject = 1;
+  string claim = 2;
+}
+
+// ECredentialPacketAck defines a struct for the packet acknowledgment
+message ECredentialPacketAck {
+	}

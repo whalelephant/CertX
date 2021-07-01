@@ -1,24 +1,20 @@
 package keeper
 
 import (
-	"encoding/hex"
 	"errors"
-	"fmt"
-	"strings"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client/types"
 	channeltypes "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/types"
 	host "github.com/cosmos/cosmos-sdk/x/ibc/core/24-host"
-	"github.com/whalelephant/certX/certX/x/credentials/types"
+	"github.com/whalelephant/certX/MoM/x/employments/types"
 )
 
-// TransmitVerifiableCredentialPacket transmits the packet over IBC with the specified source port and source channel
-func (k Keeper) TransmitVerifiableCredentialPacket(
+// TransmitECredentialPacket transmits the packet over IBC with the specified source port and source channel
+func (k Keeper) TransmitECredentialPacket(
 	ctx sdk.Context,
-	packetData types.VerifiableCredentialPacketData,
+	packetData types.ECredentialPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -70,62 +66,21 @@ func (k Keeper) TransmitVerifiableCredentialPacket(
 	return nil
 }
 
-// OnRecvVerifiableCredentialPacket processes packet reception
-func (k Keeper) OnRecvVerifiableCredentialPacket(ctx sdk.Context, packet channeltypes.Packet, data types.VerifiableCredentialPacketData) (packetAck types.VerifiableCredentialPacketAck, err error) {
+// OnRecvECredentialPacket processes packet reception
+func (k Keeper) OnRecvECredentialPacket(ctx sdk.Context, packet channeltypes.Packet, data types.ECredentialPacketData) (packetAck types.ECredentialPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
 	}
 
-	fmt.Println("Got VerifiableCredentialPacketData")
-	// Unable to send full signature during Hackathon
-	// Therefore not verifiying before store
-	// 33 secp256k1 pubkey len
-	// 64 sign len
-	if len(data.GetSignature()) == 33+64 {
-		fmt.Println("checking sign")
-		decodedSig, err := hex.DecodeString(data.GetSignature())
-		if err != nil {
-			fmt.Println("sig not decodable: ", err)
-			return packetAck, err
-		}
+	// TODO: packet reception logic
 
-		pubkey := decodedSig[0:33]
-		sig := decodedSig[33:]
-		msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
-
-		var key secp256k1.PubKey
-		key.Key = pubkey
-		addr := key.Address().String()
-
-		// Issuer did:method:identifier (identifier is address in Bech32 format)
-		didComponents := strings.Split(data.GetIssuer(), ":")
-		fmt.Println("didC[2]: ", didComponents[2])
-
-		if !key.VerifySignature([]byte(msg), sig) {
-			fmt.Println("sig not verified: ")
-			return packetAck, err
-		} else if addr != didComponents[2] {
-			fmt.Println("signer not issuer")
-			return packetAck, err
-		}
-	}
-
-	var recvProof types.Credential
-	recvProof.Creator = packet.GetSourcePort() + packet.GetDestChannel()
-	recvProof.Issuer = data.GetIssuer()
-	recvProof.Subject = data.GetSubject()
-	recvProof.Verifier = data.GetVerifier()
-	recvProof.Claim = data.GetClaim()
-	recvProof.Signature = data.GetSignature()
-	// can return ID as packetAck
-	_ = k.AppendCredential(ctx, recvProof)
 	return packetAck, nil
 }
 
-// OnAcknowledgementVerifiableCredentialPacket responds to the the success or failure of a packet
+// OnAcknowledgementECredentialPacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementVerifiableCredentialPacket(ctx sdk.Context, packet channeltypes.Packet, data types.VerifiableCredentialPacketData, ack channeltypes.Acknowledgement) error {
+func (k Keeper) OnAcknowledgementECredentialPacket(ctx sdk.Context, packet channeltypes.Packet, data types.ECredentialPacketData, ack channeltypes.Acknowledgement) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 
@@ -135,7 +90,7 @@ func (k Keeper) OnAcknowledgementVerifiableCredentialPacket(ctx sdk.Context, pac
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
-		var packetAck types.VerifiableCredentialPacketAck
+		var packetAck types.ECredentialPacketAck
 
 		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
 			// The counter-party module doesn't implement the correct acknowledgment format
@@ -151,8 +106,8 @@ func (k Keeper) OnAcknowledgementVerifiableCredentialPacket(ctx sdk.Context, pac
 	}
 }
 
-// OnTimeoutVerifiableCredentialPacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutVerifiableCredentialPacket(ctx sdk.Context, packet channeltypes.Packet, data types.VerifiableCredentialPacketData) error {
+// OnTimeoutECredentialPacket responds to the case where a packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutECredentialPacket(ctx sdk.Context, packet channeltypes.Packet, data types.ECredentialPacketData) error {
 
 	// TODO: packet timeout logic
 

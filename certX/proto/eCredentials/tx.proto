@@ -1,0 +1,25 @@
+syntax = "proto3";
+package whalelephant.certx.eCredentials;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/whalelephant/certX/certX/x/eCredentials/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc SendECredential(MsgSendECredential) returns (MsgSendECredentialResponse);
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+message MsgSendECredential {
+  string sender = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+  string subject = 5;
+  string claim = 6;
+}
+
+message MsgSendECredentialResponse {
+}

@@ -1,0 +1,32 @@
+accounts:
+  - name: ministry 
+    coins: ["1000token", "100000000stake"]
+    mnemonic: "input price beyond scare demise display artefact hurdle until waste decide symbol choice crater rose above cigar blame segment scene current impose sunny void"
+  - name: alice 
+    coins: ["1000token"]
+    mnemonic: "satisfy ticket tornado intact whale sleep field gate rule unfair enemy winner mouse damp harvest error iron scissors primary you deer all rebel write"
+  - name: relayer
+    address: "cosmos1rjnx254jxdhe52yh6ek68c457rq5j956hwxmr8"
+    coins: ["100000000stake"]
+validator:
+  name: ministry 
+  staked: "100000000stake"
+client:
+  vuex:
+    path: "vue/src/store"
+faucet:
+  name: ministry 
+  coins: ["5token"]
+init: 
+  home: ".home"
+genesis:
+  chain_id: "MoM"
+  app_state:
+    employments:
+      recordList: [{"role":"director","creator":"cosmos1d3569vdcjt2cjff2mmqlk782hs07pjhr0mq0g3","subject":"did:magician:fl5492k6uuqgent27lyp9tfwz5te50hm425k4f", "since":"2019", "id":"0"}]
+host:
+  rpc: ":46657"
+  p2p: ":46658"
+  prof: ":8060"
+  grpc: ":11091"
+  api: ":3337"

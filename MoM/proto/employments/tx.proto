@@ -1,0 +1,58 @@
+syntax = "proto3";
+package whalelephant.mom.employments;
+
+// this line is used by starport scaffolding # proto/tx/import
+import "employments/record.proto";
+
+option go_package = "github.com/whalelephant/certX/MoM/x/employments/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc SendECredential(MsgSendECredential) returns (MsgSendECredentialResponse);
+  rpc CreateRecord(MsgCreateRecord) returns (MsgCreateRecordResponse);
+  rpc UpdateRecord(MsgUpdateRecord) returns (MsgUpdateRecordResponse);
+  rpc DeleteRecord(MsgDeleteRecord) returns (MsgDeleteRecordResponse);
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+message MsgSendECredential {
+  string sender = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+  string subject = 5;
+  string claim = 6;
+  string ekey = 7;
+}
+
+message MsgSendECredentialResponse {
+}
+
+message MsgCreateRecord {
+  string creator = 1;
+  string subject = 2;
+  string role = 3;
+  string since = 4;
+}
+
+message MsgCreateRecordResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateRecord {
+  string creator = 1;
+  uint64 id = 2;
+  string subject = 3;
+  string role = 4;
+  string since = 5;
+}
+
+message MsgUpdateRecordResponse { }
+
+message MsgDeleteRecord {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteRecordResponse { }

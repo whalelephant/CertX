@@ -1,0 +1,14 @@
+syntax = "proto3";
+package whalelephant.mom.employments;
+
+option go_package = "github.com/whalelephant/certX/MoM/x/employments/types";
+
+import "gogoproto/gogo.proto";
+
+message Record {
+  string creator = 1;
+  uint64 id = 2;
+  string subject = 3; 
+  string role = 4; 
+  string since = 5; 
+}
