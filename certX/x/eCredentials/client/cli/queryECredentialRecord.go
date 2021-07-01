@@ -3,6 +3,13 @@ package cli
 import (
 	"context"
 	"strconv"
+    "encoding/base64"
+    "io"
+    "crypto/aes"
+    "crypto/cipher"
+    "crypto/rand"
+	"context"
+    "fmt"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -66,6 +73,32 @@ func CmdShowECredentialRecord() *cobra.Command {
 			if err != nil {
 				return err
 			}
+            // on the other side
+            record := res.ECredentialRecord.GetClaim()
+
+            decodedClaim, err := hex.DecodeString(record)
+            c, err := aes.NewCipher(key)
+            if err != nil {
+                fmt.Println(err)
+            }
+            gcmDecrypt, err := cipher.NewGCM(c)
+            if err != nil {
+                fmt.Println(err)
+            }
+            nonceSize := gcmDecrypt.NonceSize()
+            if len(decodedClaim) < nonceSize {
+                fmt.Println(err)
+            }
+            nonce, encryptedMessage := decodedClaim[:nonceSize], decodedClaim[nonceSize:]
+            plaintext, err := gcmDecrypt.Open(nil, nonce, encryptedMessage, nil)
+            if err != nil {
+                fmt.Println(err)
+            }
+
+            retrieveSig := plaintext[0:64]
+            retrieveMsg := plaintext[64:]
+            fmt.Println("sig: ", string(retrieveSig))
+            fmt.Println("msg: ", string(retrieveMsg))
 
 			return clientCtx.PrintProto(res)
 		},

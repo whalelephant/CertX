@@ -14,9 +14,6 @@ validator:
 client:
   vuex:
     path: "vue/src/store"
-faucet:
-  name: ministry 
-  coins: ["5token"]
 init: 
   home: ".home"
 genesis:

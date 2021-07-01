@@ -17,7 +17,7 @@ const (
 	MemStoreKey = "mem_employments"
 
 	// Version defines the current version the IBC module supports
-	Version = "employments-1"
+	Version = "eCredentials-1"
 
 	// PortID is the default port id that module binds to
 	PortID = "employments"

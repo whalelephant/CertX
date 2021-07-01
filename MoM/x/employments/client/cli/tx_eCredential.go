@@ -4,12 +4,12 @@ import (
 	"github.com/spf13/cobra"
 	"strconv"
     "crypto/rand"
-
+    "fmt"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	// "github.com/cosmos/cosmos-sdk/client/tx"
-	// channelutils "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/client/utils"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	channelutils "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/client/utils"
 	"github.com/whalelephant/certX/MoM/x/employments/types"
 )
 
@@ -39,22 +39,30 @@ func CmdSendECredential() *cobra.Command {
 				return err
 			}
 
-			// consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)
-			// if err != nil {
-			// 	return err
-			// }
-			// if timeoutTimestamp != 0 {
-			// 	timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
-			// }
+            // AES key 16 bytes
+            // To be returned to the caller to give to required trusted entity
+            key := [16]byte{}
+            _, err = rand.Read(key[:])
+            if err != nil {
+                panic(err)
+            }
+            ekey := fmt.Sprintf("%x", key)
+            fmt.Println(ekey)
 
-            ekey := "ekey"
+			consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)
+			if err != nil {
+				return err
+			}
+			if timeoutTimestamp != 0 {
+				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
+			}
 
 			msg := types.NewMsgSendECredential(sender, srcPort, srcChannel, timeoutTimestamp, string(argsSubject), string(argsClaim), ekey)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
-            return err
-			// return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
 

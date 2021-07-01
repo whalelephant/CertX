@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+    "fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -73,8 +74,51 @@ func (k Keeper) OnRecvECredentialPacket(ctx sdk.Context, packet channeltypes.Pac
 		return packetAck, err
 	}
 
-	// TODO: packet reception logic
+    fmt.Println("Got eCredentialPacket")
 
+    // At least size of the signature
+    // text:= append(sig, recordStr...)
+	// if len(data.GetClaim()) > 64 {
+	// 	fmt.Println("checking sign")
+	// 	decodedSig, err := hex.DecodeString(data.GetSignature())
+	// 	if err != nil {
+	// 		fmt.Println("sig not decodable: ", err)
+	// 		return packetAck, err
+	// 	}
+
+	// 	pubkey := decodedSig[0:33]
+	// 	sig := decodedSig[33:]
+	// 	msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
+
+	// 	var key secp256k1.PubKey
+	// 	key.Key = pubkey
+	// 	addr := key.Address().String()
+
+	// 	// Issuer did:method:identifier (identifier is address in Bech32 format)
+	// 	didComponents := strings.Split(data.GetIssuer(), ":")
+	// 	fmt.Println("didC[2]: ", didComponents[2])
+
+	// 	if !key.VerifySignature([]byte(msg), sig) {
+	// 		fmt.Println("sig not verified: ")
+	// 		return packetAck, err
+	// 	} else if addr != didComponents[2] {
+	// 		fmt.Println("signer not issuer")
+	// 		return packetAck, err
+	// 	}
+	// }
+
+	var ecr types.ECredentialRecord
+	// Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	// Id      uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+	// Subject string `protobuf:"bytes,3,opt,name=subject,proto3" json:"subject,omitempty"`
+	// Claim   string `protobuf:"bytes,4,opt,name=claim,proto3" json:"claim,omitempty"`
+    // Demo purpose only, Creator should be the Issuer from the claim string
+	ecr.Creator = packet.GetSourcePort() + packet.GetDestChannel()
+    ecr.Subject = data.GetSubject();
+    ecr.Claim = data.GetClaim();
+
+	// can return ID as packetAck
+	_ = k.AppendECredentialRecord(ctx, ecr)
 	return packetAck, nil
 }
 

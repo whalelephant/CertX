@@ -67,6 +67,7 @@ func CmdShowRecord() *cobra.Command {
 				return err
 			}
 
+
 			return clientCtx.PrintProto(res)
 		},
 	}

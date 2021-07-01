@@ -5,7 +5,7 @@ import (
 	"fmt"
     "strconv"
     "strings"
-    "encoding/hex"
+    "encoding/base64"
     "github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -69,7 +69,8 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 
     // secp256k1 pubkey is 33 bytes
     // and sig is 64 bytes
-    sigStr := hex.EncodeToString(sig)
+    // or maybe base64.URLEncoding.EncodeToString(b)
+    sigStr := base64.StdEncoding.EncodeToString(sig)
 
     // Construct the proof and store it
     var proof types.Proof;
@@ -89,7 +90,7 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 	packet.Verifier = msg.Verifier
 	packet.Issuer = claim.GetIssuer()
 	packet.Claim = externClaim
-    packet.Signature = sigStr[0:4]
+    packet.Signature = sigStr
  
 	// Transmit the packet
 	e := k.TransmitVerifiableCredentialPacket(

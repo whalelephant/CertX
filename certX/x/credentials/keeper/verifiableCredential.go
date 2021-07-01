@@ -112,6 +112,7 @@ func (k Keeper) OnRecvVerifiableCredentialPacket(ctx sdk.Context, packet channel
 	}
 
 	var recvProof types.Credential
+    // Demo purpose only, Creator should be the Issuer
 	recvProof.Creator = packet.GetSourcePort() + packet.GetDestChannel()
 	recvProof.Issuer = data.GetIssuer()
 	recvProof.Subject = data.GetSubject()
