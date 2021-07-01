@@ -2,4 +2,4 @@ src: muggleAuth
 dest: certX
 mnemonic: behave radar car upgrade pony torch shock maple replace glory stock million
 srcConnection: connection-0
-destConnection: connection-2
+destConnection: connection-0
