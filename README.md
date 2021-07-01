@@ -85,8 +85,31 @@ Please refer [certX README](./certX/readme.md) for details.
 
 ## Use case 2 Ministry of Magic Employment records
 
-TODO
+- Alice wants to retrieve her employment record from the Ministry of Magic for all potential employers.
+- A Quiddtich team is a potential employer who wants to verify Alice's claim.
+- Alice does not want her record available in public or have Ministry of Magic know where she has applied to.
+
+### MoM (Issuer Zone)
+
+This represents the Ministry of Magic. They keep many types of record, Alice is interested in her employment record.
+
+With potentially sensitive data, this blockchain is considered private.
+
+Please refer [MoM README](./MoM/readme.md) for details.
 
 ## Use case 3 Medical records
 
 TODO
+
+## Improvements
+
+As this project develops  a few ideas have come up for improvements or unimplemented
+
+- Communications between client and node should be encrypted
+- did created do not have attached documents / metadata, what was created is for demonstration only
+
+For use case 1:
+
+- Alice should give permission for authortities to contact her / not
+- Restaurant should not need to know if Alice is a muggle / witch / giant etc, zk-proof for who the issuer can protect her
+

@@ -1,10 +1,10 @@
 package keeper
 
 import (
+	"encoding/hex"
 	"errors"
-    "encoding/hex"
-    "strings"
-    "fmt"
+	"fmt"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -77,50 +77,54 @@ func (k Keeper) OnRecvVerifiableCredentialPacket(ctx sdk.Context, packet channel
 		return packetAck, err
 	}
 
-    fmt.Println("Got VerifiableCredentialPacketData")
-    // Unable to send full signature during Hackathon
-    // Therefore not verifiying before store
-    // 33 secp256k1 pubkey len
-    // 64 sign len
-    if len(data.GetSignature()) == 33 + 64 {
-        fmt.Println("checking sign")
-        decodedSig, err := hex.DecodeString(data.GetSignature());
-        if err != nil {
-            fmt.Println("sig not decodable: ", err);
-            return packetAck, err
-        }
-    
-        pubkey := decodedSig[0:33];
-        sig := decodedSig[33:]
-        msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
-    
-        var key secp256k1.PubKey
-        key.Key = pubkey;
-        addr := key.Address().String();
-    
-        // Issuer did:method:identifier (identifier is address in Bech32 format)
-        didComponents := strings.Split(data.GetIssuer(), ":")
-        fmt.Println("didC[2]: ", didComponents[2]);
-    
-        if !key.VerifySignature([]byte(msg), sig) {
-            fmt.Println("sig not verified: ");
-    		return packetAck, err 
-        } else if addr != didComponents[2] {
-            fmt.Println("signer not issuer");
-    		return packetAck, err 
-        } 
-    }
+	fmt.Println("Got VerifiableCredentialPacketData")
 
-    var recvProof types.Credential
-    recvProof.Creator = packet.GetSourcePort() + packet.GetDestChannel()
-    recvProof.Issuer = data.GetIssuer()
-    recvProof.Subject = data.GetSubject()
-    recvProof.Verifier = data.GetVerifier()
-    recvProof.Claim = data.GetClaim()
-    recvProof.Signature = data.GetSignature()
-    // can return ID as packetAck
-    _ = k.AppendCredential(ctx, recvProof)
-    return packetAck, nil
+	// Unable to send full signature during Hackathon
+    // Ran into relayer error
+    // `Please ensure the path and value are both correct.: invalid proof`
+
+	// Created a branch for not verifiying before store
+	// 33 secp256k1 pubkey len; 64 sign len
+	if len(data.GetSignature()) == 33+64 {
+		fmt.Println("checking sign")
+		decodedSig, err := hex.DecodeString(data.GetSignature())
+		if err != nil {
+			fmt.Println("sig not decodable: ", err)
+			return packetAck, err
+		}
+
+		pubkey := decodedSig[0:33]
+		sig := decodedSig[33:]
+		msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
+
+		var key secp256k1.PubKey
+		key.Key = pubkey
+		addr := key.Address().String()
+
+		// Issuer did:method:identifier (identifier is address in Bech32 format)
+		didComponents := strings.Split(data.GetIssuer(), ":")
+		fmt.Println("didC[2]: ", didComponents[2])
+
+		if !key.VerifySignature([]byte(msg), sig) {
+			fmt.Println("sig not verified: ")
+			return packetAck, err
+		} else if addr != didComponents[2] {
+			fmt.Println("signer not issuer")
+			return packetAck, err
+		}
+	}
+
+	var recvProof types.Credential
+    // Demo purpose only, Creator should be the Issuer
+	recvProof.Creator = packet.GetSourcePort() + packet.GetDestChannel()
+	recvProof.Issuer = data.GetIssuer()
+	recvProof.Subject = data.GetSubject()
+	recvProof.Verifier = data.GetVerifier()
+	recvProof.Claim = data.GetClaim()
+	recvProof.Signature = data.GetSignature()
+	// can return ID as packetAck
+	_ = k.AppendCredential(ctx, recvProof)
+	return packetAck, nil
 }
 
 // OnAcknowledgementVerifiableCredentialPacket responds to the the success or failure of a packet

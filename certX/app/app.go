@@ -91,6 +91,9 @@ import (
 	"github.com/whalelephant/certX/certX/x/credentials"
 	credentialskeeper "github.com/whalelephant/certX/certX/x/credentials/keeper"
 	credentialstypes "github.com/whalelephant/certX/certX/x/credentials/types"
+	"github.com/whalelephant/certX/certX/x/eCredentials"
+	eCredentialskeeper "github.com/whalelephant/certX/certX/x/eCredentials/keeper"
+	eCredentialstypes "github.com/whalelephant/certX/certX/x/eCredentials/types"
 )
 
 const Name = "certX"
@@ -137,6 +140,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		eCredentials.AppModuleBasic{},
 		credentials.AppModuleBasic{},
 		certx.AppModuleBasic{},
 	)
@@ -205,8 +209,10 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
-	ScopedCredentialsKeeper capabilitykeeper.ScopedKeeper
-	CredentialsKeeper       credentialskeeper.Keeper
+	ScopedECredentialsKeeper capabilitykeeper.ScopedKeeper
+	ECredentialsKeeper       eCredentialskeeper.Keeper
+	ScopedCredentialsKeeper  capabilitykeeper.ScopedKeeper
+	CredentialsKeeper        credentialskeeper.Keeper
 
 	CertxKeeper certxkeeper.Keeper
 
@@ -238,6 +244,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		eCredentialstypes.StoreKey,
 		credentialstypes.StoreKey,
 		certxtypes.StoreKey,
 	)
@@ -331,6 +338,17 @@ func New(
 	app.EvidenceKeeper = *evidenceKeeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
+	scopedECredentialsKeeper := app.CapabilityKeeper.ScopeToModule(eCredentialstypes.ModuleName)
+	app.ScopedECredentialsKeeper = scopedECredentialsKeeper
+	app.ECredentialsKeeper = *eCredentialskeeper.NewKeeper(
+		appCodec,
+		keys[eCredentialstypes.StoreKey],
+		keys[eCredentialstypes.MemStoreKey],
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedECredentialsKeeper,
+	)
+	eCredentialsModule := eCredentials.NewAppModule(appCodec, app.ECredentialsKeeper)
 	scopedCredentialsKeeper := app.CapabilityKeeper.ScopeToModule(credentialstypes.ModuleName)
 	app.ScopedCredentialsKeeper = scopedCredentialsKeeper
 	app.CredentialsKeeper = *credentialskeeper.NewKeeper(
@@ -359,6 +377,7 @@ func New(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
 	// this line is used by starport scaffolding # ibc/app/router
+	ibcRouter.AddRoute(eCredentialstypes.ModuleName, eCredentialsModule)
 	ibcRouter.AddRoute(credentialstypes.ModuleName, credentialsModule)
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -392,6 +411,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
+		eCredentialsModule,
 		credentialsModule,
 		certxModule,
 	)
@@ -427,6 +447,7 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		eCredentialstypes.ModuleName,
 		credentialstypes.ModuleName,
 		certxtypes.ModuleName,
 	)
@@ -616,6 +637,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(eCredentialstypes.ModuleName)
 	paramsKeeper.Subspace(credentialstypes.ModuleName)
 	paramsKeeper.Subspace(certxtypes.ModuleName)
 

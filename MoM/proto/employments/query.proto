@@ -1,0 +1,43 @@
+syntax = "proto3";
+package whalelephant.mom.employments;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+import "employments/record.proto";
+
+option go_package = "github.com/whalelephant/certX/MoM/x/employments/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // this line is used by starport scaffolding # 2
+
+	// Queries a record by id.
+	rpc Record(QueryGetRecordRequest) returns (QueryGetRecordResponse) {
+		option (google.api.http).get = "/whalelephant/mom/employments/record/{id}";
+	}
+
+	// Queries a list of record items.
+	rpc RecordAll(QueryAllRecordRequest) returns (QueryAllRecordResponse) {
+		option (google.api.http).get = "/whalelephant/mom/employments/record";
+	}
+
+}
+
+// this line is used by starport scaffolding # 3
+message QueryGetRecordRequest {
+	uint64 id = 1;
+}
+
+message QueryGetRecordResponse {
+	Record Record = 1;
+}
+
+message QueryAllRecordRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRecordResponse {
+	repeated Record Record = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

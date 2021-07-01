@@ -1,0 +1,43 @@
+syntax = "proto3";
+package whalelephant.certx.eCredentials;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+import "eCredentials/eCredentialRecord.proto";
+
+option go_package = "github.com/whalelephant/certX/certX/x/eCredentials/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // this line is used by starport scaffolding # 2
+
+	// Queries a eCredentialRecord by id.
+	rpc ECredentialRecord(QueryGetECredentialRecordRequest) returns (QueryGetECredentialRecordResponse) {
+		option (google.api.http).get = "/whalelephant/certx/eCredentials/eCredentialRecord/{id}";
+	}
+
+	// Queries a list of eCredentialRecord items.
+	rpc ECredentialRecordAll(QueryAllECredentialRecordRequest) returns (QueryAllECredentialRecordResponse) {
+		option (google.api.http).get = "/whalelephant/certx/eCredentials/eCredentialRecord";
+	}
+
+}
+
+// this line is used by starport scaffolding # 3
+message QueryGetECredentialRecordRequest {
+	uint64 id = 1;
+}
+
+message QueryGetECredentialRecordResponse {
+	ECredentialRecord ECredentialRecord = 1;
+}
+
+message QueryAllECredentialRecordRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllECredentialRecordResponse {
+	repeated ECredentialRecord ECredentialRecord = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

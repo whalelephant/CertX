@@ -1,0 +1,12 @@
+syntax = "proto3";
+package whalelephant.mom.mom;
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/whalelephant/certX/MoM/x/mom/types";
+
+// GenesisState defines the mom module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+    // this line is used by starport scaffolding # ibc/genesis/proto
+}
