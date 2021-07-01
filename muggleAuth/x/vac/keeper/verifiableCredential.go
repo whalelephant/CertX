@@ -94,7 +94,7 @@ func (k Keeper) OnAcknowledgementVerifiableCredentialPacket(ctx sdk.Context, pac
 
 		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
 			// The counter-party module doesn't implement the correct acknowledgment format
-			return errors.New("cannot unmarshal acknowledgment")
+			// return errors.New("cannot unmarshal acknowledgment")
 		}
 
 		// TODO: successful acknowledgement logic

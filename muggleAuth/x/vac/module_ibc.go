@@ -189,11 +189,11 @@ func (am AppModule) OnAcknowledgementPacket(
 ) (*sdk.Result, error) {
 	var ack channeltypes.Acknowledgement
 	if err := ack.Unmarshal(acknowledgement); err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+		//return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
 	var modulePacketData types.VacPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		// return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
 	var eventType string
