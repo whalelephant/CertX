@@ -1,4 +1,4 @@
-package vac
+package credentials
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	channeltypes "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/types"
 	porttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/05-port/types"
 	host "github.com/cosmos/cosmos-sdk/x/ibc/core/24-host"
-	"github.com/whalelephant/certX/muggleAuth/x/vac/types"
+	"github.com/whalelephant/certX/certX/x/credentials/types"
 )
 
 // OnChanOpenInit implements the IBCModule interface
@@ -135,7 +135,7 @@ func (am AppModule) OnRecvPacket(
 	ctx sdk.Context,
 	modulePacket channeltypes.Packet,
 ) (*sdk.Result, []byte, error) {
-	var modulePacketData types.VacPacketData
+	var modulePacketData types.CredentialsPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
 		return nil, nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
@@ -145,7 +145,7 @@ func (am AppModule) OnRecvPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/recv
-	case *types.VacPacketData_VerifiableCredentialPacket:
+	case *types.CredentialsPacketData_VerifiableCredentialPacket:
 		packetAck, err := am.keeper.OnRecvVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err.Error())
@@ -169,16 +169,10 @@ func (am AppModule) OnRecvPacket(
 		return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 	}
 
-	// Encode acknowledgement
-	ackBytes, err := ack.Marshal()
-	if err != nil {
-		return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrInvalidType, err.Error())
-	}
-
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
 	return &sdk.Result{
 		Events: ctx.EventManager().Events().ToABCIEvents(),
-	}, ackBytes, nil
+	}, ack.GetBytes(), nil
 }
 
 // OnAcknowledgementPacket implements the IBCModule interface
@@ -188,12 +182,13 @@ func (am AppModule) OnAcknowledgementPacket(
 	acknowledgement []byte,
 ) (*sdk.Result, error) {
 	var ack channeltypes.Acknowledgement
-	if err := ack.Unmarshal(acknowledgement); err != nil {
-		//return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
-	var modulePacketData types.VacPacketData
+
+	var modulePacketData types.CredentialsPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		// return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
 	var eventType string
@@ -201,7 +196,7 @@ func (am AppModule) OnAcknowledgementPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/ack
-	case *types.VacPacketData_VerifiableCredentialPacket:
+	case *types.CredentialsPacketData_VerifiableCredentialPacket:
 		err := am.keeper.OnAcknowledgementVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket, ack)
 		if err != nil {
 			return nil, err
@@ -247,7 +242,7 @@ func (am AppModule) OnTimeoutPacket(
 	ctx sdk.Context,
 	modulePacket channeltypes.Packet,
 ) (*sdk.Result, error) {
-	var modulePacketData types.VacPacketData
+	var modulePacketData types.CredentialsPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
@@ -255,7 +250,7 @@ func (am AppModule) OnTimeoutPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/timeout
-	case *types.VacPacketData_VerifiableCredentialPacket:
+	case *types.CredentialsPacketData_VerifiableCredentialPacket:
 		err := am.keeper.OnTimeoutVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket)
 		if err != nil {
 			return nil, err

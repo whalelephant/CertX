@@ -61,7 +61,7 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
     signerAddr, err := sdk.AccAddressFromBech32(claim.GetCreator()) 
     kr, err := keyring.New(sdk.KeyringServiceName(), backend, keyringDir, reader)
 
-    sig, pubkey, err := kr.SignByAddress(signerAddr, []byte(credentialMsg))
+    sig, _, err := kr.SignByAddress(signerAddr, []byte(credentialMsg))
     if err != nil {
         fmt.Println("Cannot sign");
         return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cannot sign")
@@ -69,7 +69,7 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 
     // secp256k1 pubkey is 33 bytes
     // and sig is 64 bytes
-    sigStr := hex.EncodeToString(pubkey.Bytes())  + hex.EncodeToString(sig)
+    sigStr := hex.EncodeToString(sig)
 
     // Construct the proof and store it
     var proof types.Proof;
@@ -89,7 +89,7 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 	packet.Verifier = msg.Verifier
 	packet.Issuer = claim.GetIssuer()
 	packet.Claim = externClaim
-    packet.Signature = sigStr
+    packet.Signature = sigStr[0:4]
  
 	// Transmit the packet
 	e := k.TransmitVerifiableCredentialPacket(

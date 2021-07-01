@@ -8,6 +8,10 @@ such as driver license, health record, and in this case, a vaccination record.
 
 With potentially sensitive data, this blockchain is considered private.
 
+The high level interactions with certX, verifier and users:
+
+![muggleAuth](./muggleAuth.png)
+
 ### Vac Module
 
 The `Vac Module` provides state that stores (1) the credential and (2) the proof for claims requested by muggles.

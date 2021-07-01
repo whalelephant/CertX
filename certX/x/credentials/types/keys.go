@@ -2,7 +2,7 @@ package types
 
 const (
 	// ModuleName defines the module name
-	ModuleName = "vac"
+	ModuleName = "credentials"
 
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
@@ -14,18 +14,18 @@ const (
 	QuerierRoute = ModuleName
 
 	// MemStoreKey defines the in-memory store key
-	MemStoreKey = "mem_capability"
+	MemStoreKey = "mem_credentials"
 
 	// Version defines the current version the IBC module supports
 	Version = "credentials-1"
 
 	// PortID is the default port id that module binds to
-	PortID = "vac"
+	PortID = "credentials"
 )
 
 var (
 	// PortKey defines the key to store the port ID in store
-	PortKey = KeyPrefix("vac-port-")
+	PortKey = KeyPrefix("credentials-port-")
 )
 
 func KeyPrefix(p string) []byte {
@@ -35,9 +35,4 @@ func KeyPrefix(p string) []byte {
 const (
 	CredentialKey      = "Credential-value-"
 	CredentialCountKey = "Credential-count-"
-)
-
-const (
-	ProofKey= "Proof-value-"
-	ProofCountKey= "Proof-count-"
 )
