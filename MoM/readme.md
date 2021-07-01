@@ -7,6 +7,8 @@ This directory represents the Ministry of Magic blockchain for use case 2.
 With potentially sensitive data, such as employment records, this blockchain is considered private.
 
 The high level interactions with certX, verifier and users:
+
+
 ![MoM](./mom.png)
 
 ## employments module
