@@ -1,13 +1,10 @@
 package cli
 
 import (
-	"context"
 	"strconv"
     "encoding/base64"
-    "io"
     "crypto/aes"
     "crypto/cipher"
-    "crypto/rand"
 	"context"
     "fmt"
 
@@ -52,9 +49,9 @@ func CmdListECredentialRecord() *cobra.Command {
 
 func CmdShowECredentialRecord() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-eCredentialRecord [id]",
+		Use:   "show-eCredentialRecord [id] [key (optional)]",
 		Short: "shows a eCredentialRecord",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -73,34 +70,35 @@ func CmdShowECredentialRecord() *cobra.Command {
 			if err != nil {
 				return err
 			}
-            // on the other side
-            record := res.ECredentialRecord.GetClaim()
 
-            decodedClaim, err := hex.DecodeString(record)
-            c, err := aes.NewCipher(key)
-            if err != nil {
-                fmt.Println(err)
-            }
-            gcmDecrypt, err := cipher.NewGCM(c)
-            if err != nil {
-                fmt.Println(err)
-            }
-            nonceSize := gcmDecrypt.NonceSize()
-            if len(decodedClaim) < nonceSize {
-                fmt.Println(err)
-            }
-            nonce, encryptedMessage := decodedClaim[:nonceSize], decodedClaim[nonceSize:]
-            plaintext, err := gcmDecrypt.Open(nil, nonce, encryptedMessage, nil)
-            if err != nil {
-                fmt.Println(err)
-            }
 
-            retrieveSig := plaintext[0:64]
-            retrieveMsg := plaintext[64:]
-            fmt.Println("sig: ", string(retrieveSig))
-            fmt.Println("msg: ", string(retrieveMsg))
+            if len(args[1]) > 0 {
+                // on the other side
+                record := res.ECredentialRecord.GetClaim()
 
-			return clientCtx.PrintProto(res)
+                decodedClaim, err := base64.StdEncoding.DecodeString(record)
+                key, err := base64.StdEncoding.DecodeString(args[1])
+
+                c, err := aes.NewCipher(key)
+                if err != nil {
+                    fmt.Println(err)
+                }
+                gcmDecrypt, err := cipher.NewGCM(c)
+                if err != nil {
+                    fmt.Println(err)
+                }
+                nonceSize := gcmDecrypt.NonceSize()
+                if len(decodedClaim) < nonceSize {
+                    fmt.Println(err)
+                }
+                nonce, encryptedMessage := decodedClaim[:nonceSize], decodedClaim[nonceSize:]
+                plaintext, err := gcmDecrypt.Open(nil, nonce, encryptedMessage, nil)
+                if err != nil {
+                    fmt.Println(err)
+                }
+                fmt.Println("msg: ", string(plaintext))
+            }
+            return clientCtx.PrintProto(res)
 		},
 	}
 

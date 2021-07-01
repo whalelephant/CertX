@@ -2,9 +2,7 @@ package keeper
 
 import (
 	"context"
-    "strings"
     "fmt"
-    "encoding/hex"
     "encoding/base64"
     "io"
     "crypto/aes"
@@ -14,7 +12,6 @@ import (
 
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client/types"
 	"github.com/whalelephant/certX/MoM/x/employments/types"
@@ -53,24 +50,27 @@ func (k msgServer) SendECredential(goCtx context.Context, msg *types.MsgSendECre
     rec := record.GetRole()+ record.GetSince()
     recordStr := []byte(rec)
 
+    // Note: At the time of the hackathon submission, the length of the packet
+    // caused an error therefore the following block of code is not used. 
+    // Design initially includes sig for certX to verify the Issuer
+    // The record and the signature will then be encrypted
+
     // HACK WARNING: This keypath is the same as the client, demo purpose only! 
     // Reader is not used since we are using test backend (not protected)
-    keyringDir:= ".home"
-    backend := "test"
-    reader := strings.NewReader("")
+    // keyringDir:= ".home"
+    // backend := "test"
+    // reader := strings.NewReader("")
 
-    // The signer should be the creator of the credential
-    signerAddr, err := sdk.AccAddressFromBech32(record.GetCreator()) 
-    kr, err := keyring.New(sdk.KeyringServiceName(), backend, keyringDir, reader)
-
-    _, _, err = kr.SignByAddress(signerAddr, recordStr)
-    if err != nil {
-        fmt.Println("Cannot sign");
-        return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cannot sign")
-    }
+    // signerAddr, err := sdk.AccAddressFromBech32(record.GetCreator()) 
+    // kr, err := keyring.New(sdk.KeyringServiceName(), backend, keyringDir, reader)
+    // sig, _, err = kr.SignByAddress(signerAddr, recordStr)
+    // if err != nil {
+    //     fmt.Println("Cannot sign");
+    //     return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cannot sign")
+    // }
 
     // encrypt with ekey  (sign and record)
-    key, err := hex.DecodeString(msg.GetEkey())
+    key, err := base64.StdEncoding.DecodeString(msg.GetEkey())
     if err != nil {
         fmt.Println(err)
         return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Decoding error")
@@ -90,19 +90,21 @@ func (k msgServer) SendECredential(goCtx context.Context, msg *types.MsgSendECre
     if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
         fmt.Println(err)
     }
-    // text:= append(sig, recordStr...)
-    text := recordStr
-    claim := gcm.Seal(nonce, nonce, text, nil)
+
+    // Should seal a concat of sig and recordStr instead
+    claim := gcm.Seal(nonce, nonce, recordStr, nil)
     claimStr := base64.StdEncoding.EncodeToString(claim)
     fmt.Println("claimStr: ", claimStr)
+
+    // There seems to be a limit, 140 does not work 
+    // However
+    fmt.Println("claimStr len: ", len(claimStr))
 
 	// Construct the packet
 	var packet types.ECredentialPacketData
 
 	packet.Subject = msg.Subject
-    // 20 works
-    fmt.Println("claimStr len: ", len(claimStr))
-    packet.Claim = claimStr 
+	packet.Claim = claimStr
 
 	// Transmit the packet
 	err = k.TransmitECredentialPacket(

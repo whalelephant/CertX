@@ -69,7 +69,6 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 
     // secp256k1 pubkey is 33 bytes
     // and sig is 64 bytes
-    // or maybe base64.URLEncoding.EncodeToString(b)
     sigStr := base64.StdEncoding.EncodeToString(sig)
 
     // Construct the proof and store it
@@ -90,7 +89,10 @@ func (k msgServer) SendVerifiableCredential(goCtx context.Context, msg *types.Ms
 	packet.Verifier = msg.Verifier
 	packet.Issuer = claim.GetIssuer()
 	packet.Claim = externClaim
-    packet.Signature = sigStr
+    // During the time of the hackathon only a portion of the sig
+    // were include, as ran into error
+    // `Please ensure the path and value are both correct.: invalid proof`
+    packet.Signature = sigStr[0:4]
  
 	// Transmit the packet
 	e := k.TransmitVerifiableCredentialPacket(

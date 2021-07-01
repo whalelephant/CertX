@@ -5,6 +5,8 @@ import (
 	"strconv"
     "crypto/rand"
     "fmt"
+    "encoding/base64"
+
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -39,14 +41,14 @@ func CmdSendECredential() *cobra.Command {
 				return err
 			}
 
-            // AES key 16 bytes
+            // AES key 32 bytes
             // To be returned to the caller to give to required trusted entity
-            key := [16]byte{}
+            key := make([]byte, 32)
             _, err = rand.Read(key[:])
             if err != nil {
                 panic(err)
             }
-            ekey := fmt.Sprintf("%x", key)
+            ekey := base64.StdEncoding.EncodeToString(key)
             fmt.Println(ekey)
 
 			consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)

@@ -23,6 +23,14 @@ The second state is a record that allows for the Issuer to:
 - revoke any proofs (perhaps Alice's vaccine is not effective with new variant)
 - recall (i.e. if there is an outbreak at the restaurant, authorities may want to notify Alice)
 
+### Vac CLI
+
+_A hackathon version of the credential wallet interface:_
+
+To provide user with a simple interface, when user wants to send a verifiable credential, the CLI automatically
+creates and stores a new keypair, simulating the creation of a new `did`. This new unique did is then used as the subject
+of the claim, i.e. what the verifier sees.
+
 ### Vac Types
 
 ```sh
@@ -57,23 +65,6 @@ verifiableCredential {
 }
 
 ```
-
-
-## Get started
-
-```sh
-starport serve
-```
-
-`serve` command installs dependencies, builds, initializes and starts your blockchain in development.
-
-## Configure
-
-Your blockchain in development can be configured with `config.yml`. To learn more see the [reference](https://github.com/tendermint/starport#documentation).
-
-## Launch
-
-To launch your blockchain live on mutliple nodes use `starport network` commands. Learn more about [Starport Network](https://github.com/tendermint/spn).
 
 ## Useful cmd
 

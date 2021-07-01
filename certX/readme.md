@@ -1,10 +1,25 @@
 # certX
 
-## CertX Module
+This represents the publicly available blockchain storage for decentralised credentials.
+There are two modules:
 
-The `CertX Module` simple receives IBC messages from Issuer Zones and records the proofs.
+1. *credentials* - this provides publicly available plaintext credential for verification.
+This is used to demonstrate use case 1
+2. *eCredentials* - this provides publicly available encrypted credential (use case 2)
 
-## CertX Types
+## credentials module
+
+The `credentials Module` execute the following:
+
+1. receives IBC messages from Issuer Zones containing verifiable credentials
+2. verify the signature of the message as the actual issuer \*
+3. records the credential
+
+\* : This part is included in `keeper/verifiableCredential.go`.
+However, for the duration of the hackthon, certX team was unable to sent the full signature.
+(Codec / length of packet issue) and therefore a code branch to skip verification was provided.
+
+### credentials types and packets
 
 ```sh
 # Stores all crednetials that were received via IBC
@@ -14,19 +29,20 @@ Credential: {
     verifier: did
     # Issuer of the claim, e.g. Health Authority
     issuer: did,
-    # Subject the claim is about, e.g. Alice's muggle did
+    # Subject the claim is about, e.g. Alice's one time unique
     subject:did,
     # Actual claim, e.g. vaccination record recieved
     claim: Int 
 }
 
+# Packet received via IBC
 verifiableCredential {
-    # The identifier for the verifier, e.g. Alice's new did created for the retaurant
-    subject: did,
     # Verifier this proof is meant to be for, e.g. restaurant
     verifier: did,
     # Issuer of this proof, e.g. health authority
     issuer: did 
+    # The identifier for the verifier, e.g. Alice's new did created for the retaurant
+    subject: did,
     # Actual claim, e.g. vaccination record recieved or simply fully / partial / none
     # (i.e. the issuer can obfuscate details if they see fit)
     claim: some_claim_description,
@@ -36,23 +52,41 @@ verifiableCredential {
 }
 ```
 
-**certX** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://github.com/tendermint/starport).
+## eCredential module
 
-## Get started
+The `eCredential module` executes the following:
+
+1. simply recieves the credential and stores it.
+
+### eCredential CLI
+
+When querying for a specific `eCredential`, user can provide the shared key (from the holder)
+and the CLI will display the credential in plain text.
+
+If no key is provided, only encrypted text is returned
 
 ```sh
-starport serve
+certXd query eCredentials show-eCredentialRecord <claim-id> <shared-key>
 ```
 
-`serve` command installs dependencies, builds, initializes and starts your blockchain in development.
+### eCredential types
 
-## Configure
-
-Your blockchain in development can be configured with `config.yml`. To learn more see the [reference](https://github.com/tendermint/starport#documentation).
+```sh
+eCredential / eCredentialRecord {
+    # Subject did, e.g. Alice's did created when applying for a role
+    subject: did,
+    # Encrypted text of the credential, i.e. alice's employment history
+    claim: string
+}
+```
 
 ## Useful cmd
 
 ```sh
-# Query new credential from 
+# Query new plaintext credential from 
 certXd query credentials list-credential --node tcp://localhost:36657
+
+# Query specific encrypted credential with shared key
+# If no key is provided, cipher text of crednetial is returned 
+certXd query eCredentials show-eCredentialRecord 0 <shared key> --node tcp://localhost:36657
 ```

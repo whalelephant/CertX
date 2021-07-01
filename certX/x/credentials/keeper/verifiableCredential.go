@@ -78,10 +78,13 @@ func (k Keeper) OnRecvVerifiableCredentialPacket(ctx sdk.Context, packet channel
 	}
 
 	fmt.Println("Got VerifiableCredentialPacketData")
+
 	// Unable to send full signature during Hackathon
-	// Therefore not verifiying before store
-	// 33 secp256k1 pubkey len
-	// 64 sign len
+    // Ran into relayer error
+    // `Please ensure the path and value are both correct.: invalid proof`
+
+	// Created a branch for not verifiying before store
+	// 33 secp256k1 pubkey len; 64 sign len
 	if len(data.GetSignature()) == 33+64 {
 		fmt.Println("checking sign")
 		decodedSig, err := hex.DecodeString(data.GetSignature())

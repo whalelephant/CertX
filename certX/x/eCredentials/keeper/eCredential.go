@@ -75,6 +75,7 @@ func (k Keeper) OnRecvECredentialPacket(ctx sdk.Context, packet channeltypes.Pac
 	}
 
     fmt.Println("Got eCredentialPacket")
+    fmt.Println("total Length of Claim: ", len(data.GetClaim()))
 
     // At least size of the signature
     // text:= append(sig, recordStr...)
@@ -108,11 +109,6 @@ func (k Keeper) OnRecvECredentialPacket(ctx sdk.Context, packet channeltypes.Pac
 	// }
 
 	var ecr types.ECredentialRecord
-	// Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	// Id      uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
-	// Subject string `protobuf:"bytes,3,opt,name=subject,proto3" json:"subject,omitempty"`
-	// Claim   string `protobuf:"bytes,4,opt,name=claim,proto3" json:"claim,omitempty"`
-    // Demo purpose only, Creator should be the Issuer from the claim string
 	ecr.Creator = packet.GetSourcePort() + packet.GetDestChannel()
     ecr.Subject = data.GetSubject();
     ecr.Claim = data.GetClaim();
