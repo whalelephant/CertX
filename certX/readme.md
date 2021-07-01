@@ -9,7 +9,7 @@ This is used to demonstrate use case 1
 
 ## credentials module
 
-The `credentials Module` execute the following:
+The `credential module` executes the following upon recieving a IBC message:
 
 1. receives IBC messages from Issuer Zones containing verifiable credentials
 2. verify the signature of the message as the actual issuer \*
@@ -54,7 +54,7 @@ verifiableCredential {
 
 ## eCredential module
 
-The `eCredential module` executes the following:
+The `eCredential module` executes the following upon recieving a IBC message:
 
 1. simply recieves the credential and stores it.
 
@@ -88,5 +88,5 @@ certXd query credentials list-credential --node tcp://localhost:36657
 
 # Query specific encrypted credential with shared key
 # If no key is provided, cipher text of crednetial is returned 
-certXd query eCredentials show-eCredentialRecord 0 <shared key> --node tcp://localhost:36657
+certXd query eCredentials show-eCredentialRecord <id> <shared key> --node tcp://localhost:36657
 ```
