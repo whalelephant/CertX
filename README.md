@@ -97,6 +97,12 @@ With potentially sensitive data, this blockchain is considered private.
 
 Please refer [MoM README](./MoM/readme.md) for details.
 
+### CertX (Proofs Provider)
+
+This is a publicly accessible Blockchain to store proofs.
+
+Please refer [certX README](./certX/readme.md) for details.
+
 ## Use case 3 Medical records
 
 TODO
@@ -107,9 +113,6 @@ As this project develops  a few ideas have come up for improvements or unimpleme
 
 - Communications between client and node should be encrypted
 - did created do not have attached documents / metadata, what was created is for demonstration only
-
-For use case 1:
-
 - Alice should give permission for authortities to contact her / not
 - Restaurant should not need to know if Alice is a muggle / witch / giant etc, zk-proof for who the issuer can protect her
 
