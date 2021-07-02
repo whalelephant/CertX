@@ -6,7 +6,7 @@ This represents the authorities for muggles (non-magical humans).
 For example, it might be a blockchain that stores and provides verifiable credentials for registered citizens,
 such as driver license, health record, and in this case, a vaccination record.
 
-With potentially sensitive data, this blockchain is considered private.
+With potentially sensitive data, this blockchain is private.
 
 The high level interactions with certX, verifier and users:
 
@@ -16,12 +16,12 @@ The high level interactions with certX, verifier and users:
 
 The `Vac Module` provides state that stores (1) the credential and (2) the proof for claims requested by muggles.
 
-The first state is updated by direct messages to the module and is the lookup to facilitate the provisioning of the proof.
+The first state updated by direct messages to the module and is the lookup to facilitate the provisioning of the proof.
 
 The second state is a record that allows for the Issuer to:
 
 - revoke any proofs (perhaps Alice's vaccine is not effective with new variant)
-- recall (i.e. if there is an outbreak at the restaurant, authorities may want to notify Alice)
+- recall (i.e., if there is an outbreak at the restaurant, authorities may want to notify Alice)
 
 ### Vac CLI
 
@@ -29,12 +29,12 @@ _A hackathon version of the credential wallet interface:_
 
 To provide user with a simple interface, when user wants to send a verifiable credential, the CLI automatically
 creates and stores a new keypair, simulating the creation of a new `did`. This new unique did is then used as the subject
-of the claim, i.e. what the verifier sees.
+of the claim, i.e., what the verifier sees.
 
 ### Vac Types
 
 ```sh
-# Stores all crednetials 
+# Stores all credentials 
 Credential: {
     # Verifier this proof is meant to be for, e.g. restaurant
     verifier: did
@@ -42,7 +42,7 @@ Credential: {
     issuer: did,
     # Subject the claim is about, e.g. Alice's muggle did
     holder:did,
-    # Actual claim, e.g. vaccination record recieved
+    # Actual claim, e.g. vaccination record received
     claim: claim_string
 }
 
@@ -56,7 +56,7 @@ verifiableCredential {
         verifier: did,
         # Issuer of this proof, e.g. health authority
         issuer: did 
-        # Actual claim, e.g.  vaccination record recieved or simply fully / partial / none
+        # Actual claim, e.g.  vaccination record received or simply fully / partial / none
         # (In the case that types of vaccine have different number requirements, should not disclose)
         claim: some_claim_description,
     },

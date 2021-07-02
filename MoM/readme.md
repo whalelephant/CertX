@@ -13,7 +13,7 @@ With potentially sensitive data, such as employment records, this blockchain is 
 
 ## Employments Module
 
-This module records employment records, however, unlike [muggleAuth](../muggleauth/readme.md), the credential provided to *certX* is encrypted and only the credential holder, (i.e. Alice) will have the key. In this case, she can share with her potential employers to review her credentials.
+This module records employment records, however, unlike [muggleAuth](../muggleauth/readme.md), the credential provided to *certX* is encrypted and only the credential holder, i.e., Alice will have the key. In this case, she can share with her potential employers to review her credentials.
 
 
 #### Simple Step Breakdown
