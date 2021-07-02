@@ -112,7 +112,6 @@ TODO
 As this project develops a few ideas have come up for improvements or unimplemented
 
 - Communications between client and node should be encrypted
-- *DID* creation should not have attached documents / metadata, what was created is for demonstration only
+- *DID* creation did not have attached documents / metadata, what was created is for demonstration only
 - Alice should give permission for authorities to contact her / not
 - Restaurant should not need to know if Alice is a muggle / witch / giant etc, zk-proof for whom the issuer can protect her
-
