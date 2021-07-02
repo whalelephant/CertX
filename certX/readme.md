@@ -9,16 +9,16 @@ This is used to demonstrate use case 1
 
 ## credentials module
 
-The `credential module` executes the following upon recieving a IBC message:
+The `credential module` executes the following upon receiving an IBC message:
 
 1. receives IBC messages from Issuer Zones containing verifiable credentials
 2. verify the signature of the message as the actual issuer
 3. records the credential
 
-### credentials types and packets
+### credential types and packets
 
 ```sh
-# Stores all crednetials that were received via IBC
+# Stores all credentials that were received via IBC
 # note the original holder is not provided, only the new did
 Credential: {
     # Verifier this proof is meant to be for, e.g. restaurant
@@ -27,7 +27,7 @@ Credential: {
     issuer: did,
     # Subject the claim is about, e.g. Alice's one time unique
     subject:did,
-    # Actual claim, e.g. vaccination record recieved
+    # Actual claim, e.g. vaccination record received
     claim: Int 
 }
 
@@ -37,9 +37,9 @@ verifiableCredential {
     verifier: did,
     # Issuer of this proof, e.g. health authority
     issuer: did 
-    # The identifier for the verifier, e.g. Alice's new did created for the retaurant
+    # The identifier for the verifier, e.g. Alice's new did created for the restaurant
     subject: did,
-    # Actual claim, e.g. vaccination record recieved or simply fully / partial / none
+    # Actual claim, e.g. vaccination record received or simply fully / partial / none
     # (i.e. the issuer can obfuscate details if they see fit)
     claim: some_claim_description,
     # Signature of the Issuer and related metadata
@@ -50,7 +50,7 @@ verifiableCredential {
 
 ## eCredential module
 
-The `eCredential module` executes the following upon recieving a IBC message:
+The `eCredential module` executes the following upon receiving an IBC message:
 
 1. simply receives the credential and stores it.
 
