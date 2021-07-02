@@ -2,28 +2,24 @@
 
 ## MoM (Issuer Zone)
 
-This directory represents the Ministry of Magic blockchain for use case 2.
+This directory represents the Ministry of Magic blockchain for *Use Case 2*.
 
-With potentially sensitive data, such as employment records, this blockchain is considered private.
 
-The high level interactions with certX, verifier and users:
+### High level interactions with certX, verifier and users
+With potentially sensitive data, such as employment records, this blockchain is private.
 
 
 ![MoM](./mom.png)
 
-## employments module
+## Employments Module
 
-This module records employment records, however, unlike [muggleAuth](../muggleauth/readme.md),
-the credential provided to *certX* is encrypted and only the credential holder, in our case, Alice,
-will have the key, where she can share with her potential employers to review her credentials.
+This module records employment records, however, unlike [muggleAuth](../muggleauth/readme.md), the credential provided to *certX* is encrypted and only the credential holder, i.e., Alice will have the key. In this case, she can share with her potential employers to review her credentials.
 
-### employment Module
 
-This modeule stores the employment record in `record` and upon requests from a user:-
-
-1. checks if the record exists
-1. if so, encrypts the record
-1. sends IBC packet `eCredential` to *certX*
+#### Simple Step Breakdown
+1. Checks if the record exists
+1. If so, encrypts the record
+1. Sends IBC packet `eCredential` to *certX*
 
 ## Useful cmd
 
