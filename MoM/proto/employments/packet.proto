@@ -7,7 +7,15 @@ message EmploymentsPacketData {
     oneof packet {
         NoData noData = 1;
         // this line is used by starport scaffolding # ibc/packet/proto/field
-				ECredentialPacketData eCredentialPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
+		ECredentialPacketData eCredentialPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
+    }
+}
+
+message ECredentialsPacketData{
+    oneof packet {
+        NoData noData = 1;
+        // this line is used by starport scaffolding # ibc/packet/proto/field
+		ECredentialPacketData eCredentialPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
     }
 }
 

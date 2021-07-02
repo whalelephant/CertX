@@ -135,39 +135,31 @@ func (am AppModule) OnRecvPacket(
 	ctx sdk.Context,
 	modulePacket channeltypes.Packet,
 ) (*sdk.Result, []byte, error) {
-	var modulePacketData types.VacPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	var modulePacketData types.VerifiableCredentialPacketData
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		return nil, nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
 	var ack channeltypes.Acknowledgement
 
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/recv
-	case *types.VacPacketData_VerifiableCredentialPacket:
-		packetAck, err := am.keeper.OnRecvVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket)
+	packetAck, err := am.keeper.OnRecvVerifiableCredentialPacket(ctx, modulePacket, modulePacketData)
+	if err != nil {
+		ack = channeltypes.NewErrorAcknowledgement(err.Error())
+	} else {
+		// Encode packet acknowledgment
+		packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
 		if err != nil {
-			ack = channeltypes.NewErrorAcknowledgement(err.Error())
-		} else {
-			// Encode packet acknowledgment
-			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			if err != nil {
-				return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
-			}
-			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+			return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 		}
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeVerifiableCredentialPacket,
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-			),
-		)
-	default:
-		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
+		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 	}
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeVerifiableCredentialPacket,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+		),
+	)
 
 	// Encode acknowledgement
 	ackBytes, err := ack.Marshal()
@@ -188,29 +180,21 @@ func (am AppModule) OnAcknowledgementPacket(
 	acknowledgement []byte,
 ) (*sdk.Result, error) {
 	var ack channeltypes.Acknowledgement
-	if err := ack.Unmarshal(acknowledgement); err != nil {
-		//return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
-	var modulePacketData types.VacPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		// return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+	var modulePacketData types.VerifiableCredentialPacketData
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
 	var eventType string
 
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/ack
-	case *types.VacPacketData_VerifiableCredentialPacket:
-		err := am.keeper.OnAcknowledgementVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket, ack)
-		if err != nil {
-			return nil, err
-		}
-		eventType = types.EventTypeVerifiableCredentialPacket
-	default:
-		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
+	err := am.keeper.OnAcknowledgementVerifiableCredentialPacket(ctx, modulePacket, modulePacketData, ack)
+	if err != nil {
+		return nil, err
 	}
+	eventType = types.EventTypeVerifiableCredentialPacket
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

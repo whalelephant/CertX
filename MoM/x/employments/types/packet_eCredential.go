@@ -9,10 +9,6 @@ func (p ECredentialPacketData) ValidateBasic() error {
 }
 
 // GetBytes is a helper for serialising
-func (p ECredentialPacketData) GetBytes() ([]byte, error) {
-	var modulePacket EmploymentsPacketData
-
-	modulePacket.Packet = &EmploymentsPacketData_ECredentialPacket{&p}
-
-	return modulePacket.Marshal()
+func (p ECredentialPacketData) GetBytes() ([]byte) {
+    return ModuleCdc.MustMarshalJSON(&p)
 }

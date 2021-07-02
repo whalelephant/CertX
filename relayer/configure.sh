@@ -4,8 +4,8 @@ ibc-setup connect --home relayer
 
 #Setup channel 
 ibc-setup channel -v  \
-          --src-connection connection-1 \
-          --dest-connection connection-2 \
+          --src-connection connection-0 \
+          --dest-connection connection-1 \
           --src-port vac \
           --dest-port credentials \
           --version credentials-1 \

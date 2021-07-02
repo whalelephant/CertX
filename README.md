@@ -1,6 +1,6 @@
 # CertX
 
-This project is designed to demostrate the use of IBC between different zones in the Cosmos ecosystem for privacy perserving credential management.
+This project is designed to demonstrate the use of IBC between different zones in the Cosmos ecosystem for privacy preserving credential management.
 **This project is incubated for the submission of HackATOM HCMC 2021**
 
 ## Motivation

@@ -43,10 +43,7 @@ func (k Keeper) TransmitVerifiableCredentialPacket(
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
-	packetBytes, err := packetData.GetBytes()
-	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, "cannot marshal the packet: "+err.Error())
-	}
+	packetBytes := packetData.GetBytes()
 
 	packet := channeltypes.NewPacket(
 		packetBytes,

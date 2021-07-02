@@ -37,4 +37,4 @@ MoMd query employments list-record --node tcp://localhost:46657
 MoMd tx employments send-eCredential employments channel-0 did:certX:aliceQuidditch 0 --node tcp://localhost:46657 --home .home --from alice
 ```
 
-To query the encrypted credentials, please refer to [certX](../certX/readme.md) 
+To query the encrypted credentials, please refer to [certX](../certX/readme.md)

@@ -9,8 +9,10 @@ import (
     "crypto/cipher"
     "crypto/rand"
     "strconv"
+    "strings"
 
 
+    "github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client/types"
@@ -47,27 +49,22 @@ func (k msgServer) SendECredential(goCtx context.Context, msg *types.MsgSendECre
     } 
 
     // create string from record 
-    rec := record.GetRole()+ record.GetSince()
+    rec := "subject:" + record.GetSubject() + "role:" + record.GetRole()+ "since:" + record.GetSince()
     recordStr := []byte(rec)
-
-    // Note: At the time of the hackathon submission, the length of the packet
-    // caused an error therefore the following block of code is not used. 
-    // Design initially includes sig for certX to verify the Issuer
-    // The record and the signature will then be encrypted
 
     // HACK WARNING: This keypath is the same as the client, demo purpose only! 
     // Reader is not used since we are using test backend (not protected)
-    // keyringDir:= ".home"
-    // backend := "test"
-    // reader := strings.NewReader("")
+    keyringDir:= ".home"
+    backend := "test"
+    reader := strings.NewReader("")
 
-    // signerAddr, err := sdk.AccAddressFromBech32(record.GetCreator()) 
-    // kr, err := keyring.New(sdk.KeyringServiceName(), backend, keyringDir, reader)
-    // sig, _, err = kr.SignByAddress(signerAddr, recordStr)
-    // if err != nil {
-    //     fmt.Println("Cannot sign");
-    //     return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cannot sign")
-    // }
+    signerAddr, err := sdk.AccAddressFromBech32(record.GetCreator()) 
+    kr, err := keyring.New(sdk.KeyringServiceName(), backend, keyringDir, reader)
+    sig, _, err := kr.SignByAddress(signerAddr, recordStr)
+    if err != nil {
+        fmt.Println("Cannot sign");
+        return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cannot sign")
+    }
 
     // encrypt with ekey  (sign and record)
     key, err := base64.StdEncoding.DecodeString(msg.GetEkey())
@@ -92,12 +89,10 @@ func (k msgServer) SendECredential(goCtx context.Context, msg *types.MsgSendECre
     }
 
     // Should seal a concat of sig and recordStr instead
-    claim := gcm.Seal(nonce, nonce, recordStr, nil)
+    text := append(sig, recordStr...)
+    claim := gcm.Seal(nonce, nonce, text, nil)
     claimStr := base64.StdEncoding.EncodeToString(claim)
     fmt.Println("claimStr: ", claimStr)
-
-    // There seems to be a limit, 140 does not work 
-    // However
     fmt.Println("claimStr len: ", len(claimStr))
 
 	// Construct the packet

@@ -12,12 +12,8 @@ This is used to demonstrate use case 1
 The `credential module` executes the following upon recieving a IBC message:
 
 1. receives IBC messages from Issuer Zones containing verifiable credentials
-2. verify the signature of the message as the actual issuer \*
+2. verify the signature of the message as the actual issuer
 3. records the credential
-
-\* : This part is included in `keeper/verifiableCredential.go`.
-However, for the duration of the hackthon, certX team was unable to sent the full signature.
-(Codec / length of packet issue) and therefore a code branch to skip verification was provided.
 
 ### credentials types and packets
 
