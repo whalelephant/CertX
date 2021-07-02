@@ -13,6 +13,11 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 }
 
+func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
+	cdc.RegisterConcrete(&MsgSendECredential{}, "eCredentials/SendECredential", nil)
+	// cdc.RegisterConcrete(&ECredentialPacketData{}, "eCredentials/ECredentialPacketData", nil)
+}
+
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	// this line is used by starport scaffolding # 3
 	registry.RegisterImplementations((*sdk.Msg)(nil),
@@ -24,5 +29,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 
 var (
 	amino     = codec.NewLegacyAmino()
-	ModuleCdc = codec.NewAminoCodec(amino)
+    ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
 )
+

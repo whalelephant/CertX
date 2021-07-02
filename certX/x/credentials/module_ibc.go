@@ -135,39 +135,31 @@ func (am AppModule) OnRecvPacket(
 	ctx sdk.Context,
 	modulePacket channeltypes.Packet,
 ) (*sdk.Result, []byte, error) {
-	var modulePacketData types.CredentialsPacketData
+	var modulePacketData types.VerifiableCredentialPacketData
 	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		return nil, nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
 	var ack channeltypes.Acknowledgement
 
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/recv
-	case *types.CredentialsPacketData_VerifiableCredentialPacket:
-		packetAck, err := am.keeper.OnRecvVerifiableCredentialPacket(ctx, modulePacket, *packet.VerifiableCredentialPacket)
+	packetAck, err := am.keeper.OnRecvVerifiableCredentialPacket(ctx, modulePacket, modulePacketData)
+	if err != nil {
+		ack = channeltypes.NewErrorAcknowledgement(err.Error())
+	} else {
+		// Encode packet acknowledgment
+		packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
 		if err != nil {
-			ack = channeltypes.NewErrorAcknowledgement(err.Error())
-		} else {
-			// Encode packet acknowledgment
-			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			if err != nil {
-				return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
-			}
-			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+			return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 		}
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeVerifiableCredentialPacket,
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-			),
-		)
-	default:
-		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
+		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 	}
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeVerifiableCredentialPacket,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+		),
+	)
 
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
 	return &sdk.Result{

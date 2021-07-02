@@ -89,6 +89,7 @@ func (k Keeper) OnRecvVerifiableCredentialPacket(ctx sdk.Context, packet channel
     // 33 secp256k1 pubkey len; 64 sign len
 	pubkey := decodedSig[0:33]
 	sig := decodedSig[33:]
+    // credentialMsg := msg.Subject + msg.Verifier + claim.GetIssuer() + externClaim 
 	msg := data.GetSubject() + data.GetVerifier() + data.GetIssuer() + data.GetClaim()
 
 	var key secp256k1.PubKey
