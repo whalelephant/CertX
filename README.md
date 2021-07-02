@@ -10,13 +10,13 @@ a single entity or even blockchain providing the single source of truth is no lo
 
 This is where IBC becomes a critical component on which the future is built on.
 
-Since the relayer service can be external, it makes sense to design for cases where the packets sent can be plain text or encrypted.
+Since the relayer services and zones can be external or public, it makes sense to design for cases where the packets sent can be plain text or encrypted., it makes sense to design for cases where the packets sent can be plain text or encrypted.
 
 The use cases we designed for are communications between:
 
 1. Private to Public zones where information is public: [Use Case 1]
 1. Private to Public zones where information is authorised by the sender only [Use Case 2]
-1. Private to Private zones (key-exchanged) [Use Case 3]
+1. Private to Private zones (key-exchanged) [Use Case 3] (Not implemented in the Hackathon)
 
 With all the cases listed, this project uses the concepts of verifiable credential to showcase IBC usage.
 We use [*dencentralised identifiers*] for entities to ensure no social mapping, behaviour patterns can be derived.
