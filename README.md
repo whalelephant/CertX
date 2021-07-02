@@ -1,7 +1,7 @@
 # CertX
 
-This project is designed to demonstrate the use of IBC between different zones in the Cosmos ecosystem for privacy preserving credential management.
-**This project is incubated for the submission of HackATOM HCMC 2021**
+This is a project designed to demonstrate the use of IBC between different zones in the Cosmos ecosystem for privacy preserving credential management.
+**This is a project incubated for the submission of HackATOM HCMC 2021**
 
 ## Motivation
 
@@ -10,7 +10,7 @@ a single entity or even blockchain providing the single source of truth is no lo
 
 This is where IBC becomes a critical component on which the future is built on.
 
-Since the relayer services and zones can be external or public, it makes sense to design for cases where the packets sent can be plain text or encrypted., it makes sense to design for cases where the packets sent can be plain text or encrypted.
+Since the relayer services and zones can be external or public, it makes sense to design for cases where the packets sent can be plain text or encrypted.
 
 The use cases we designed for are communications between:
 
@@ -19,7 +19,7 @@ The use cases we designed for are communications between:
 1. Private to Private zones (key-exchanged) [Use Case 3] (Not implemented in the Hackathon)
 
 With all the cases listed, this project uses the concepts of verifiable credential to showcase IBC usage.
-We use [*dencentralised identifiers*] for entities to ensure no social mapping, behaviour patterns can be derived.
+We use [*decentralised identifiers*] for entities to ensure no social mapping, behaviour patterns can be derived.
 
 ### Design Overview
 
@@ -30,18 +30,18 @@ We follow W3C recommendations of Verifiable Credential. A summary of the [roles]
 ![w3c_defined_vc](./w3c_defined_vc.png)
 
 - *Issuer*: A role an entity performs by asserting claims about one or more subjects, creating a verifiable credential from these claims, and transmitting the verifiable credential to a holder.
-- *Holder*: A role an entity might perform by possessing one or more verifiable credentials and generating verifiable presentations from them. Example holders include students, employees, and customers.
-- *Verifier*: A role an entity performs by receiving one or more verifiable credentials, optionally inside a verifiable presentation, for processing. Example verifiers include employers, security personnel, and websites.
-- *Verifiable data registry*: A role a system might perform by mediating the creation and verification of identifiers, keys, and other relevant data, such as revocation registries, issuer public keys, and so on, which might be required to use verifiable credentials.  Example verifiable data registries include trusted databases, decentralized databases, government ID databases
+- *Holder*: A role an entity might perform by possessing one or more verifiable credentials and generating verifiable presentations from them e.g., students, employees, and customers.
+- *Verifier*: A role an entity performs by receiving one or more verifiable credentials, optionally inside a verifiable presentation, for processing e.g., employers, security personnel, and websites.
+- *Verifiable data registry*: A role a system might perform by mediating the creation and verification of identifiers, keys, and other relevant data, such as revocation registries or public keys from an issuer which require verifiable credentials e.g., trusted databases, decentralized databases, government ID databases.
 
-We restrict ourselves to provide, to all the users (Issuer, Holder, Verifier), the same interface as this model, i.e. only communicating with a Verifiable data registry.
+We restrict ourselves to provide, to all the users (Issuer, Holder, Verifier), the same interface as this model, i.e., only communicating with a Verifiable data registry.
 
-However, they may or may not communicate to the **same** verifiable data registry and this is where IBC connects the different services provided by the registry.
-This is demonstrated here:
+However, their may or may not be communication to the **same** verifiable data registry. This is where IBC connects the different services provided by the registry. This is demonstrated in Figure A. 
 
+Figure A
 ![decentralised_vdr](./decentralised_vdr.png)
 
-- Each holder will have as many DID as needed, these may be used once or resued as they see fit
+- Each holder will have as many DID as needed, these may be used once or reused as they see fit
 - The Issuer - Holder identifiers may or may not be the same as Holder - Verifiable identifiers
 
 ### Role of CertX
@@ -65,7 +65,7 @@ This usage of this service is strictly with IBC.
 
 - Alice wants to demonstrate to a restaurant that she has been fully vaccinated.
 - The restaurant does not need to know who Alice is other than the fact she has been vaccinated.
-- Alice does not want to reused the identity for the restaurant for other services as she does not want to be tracked.
+- Alice does not want to reuse the identity for the restaurant for other services as she does not want to be tracked.
 
 ### MuggleAuth (Issuer Zone)
 
@@ -109,10 +109,10 @@ TODO
 
 ## Improvements
 
-As this project develops  a few ideas have come up for improvements or unimplemented
+As this project develops a few ideas have come up for improvements or unimplemented
 
 - Communications between client and node should be encrypted
-- did created do not have attached documents / metadata, what was created is for demonstration only
-- Alice should give permission for authortities to contact her / not
+- *DID* creation should not have attached documents / metadata, what was created is for demonstration only
+- Alice should give permission for authorities to contact her / not
 - Restaurant should not need to know if Alice is a muggle / witch / giant etc, zk-proof for who the issuer can protect her
 
