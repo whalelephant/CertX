@@ -52,14 +52,13 @@ verifiableCredential {
 
 The `eCredential module` executes the following upon recieving a IBC message:
 
-1. simply recieves the credential and stores it.
+1. simply receives the credential and stores it.
 
 ### eCredential CLI
 
-When querying for a specific `eCredential`, user can provide the shared key (from the holder)
-and the CLI will display the credential in plain text.
+When querying for a specific `eCredential`, a user can provide the shared key (from the holder), and the CLI will display the credential in plain text.
 
-If no key is provided, only encrypted text is returned
+If no key provided, then only encrypted text will be returned.
 
 ```sh
 certXd query eCredentials show-eCredentialRecord <claim-id> <shared-key>
@@ -76,13 +75,13 @@ eCredential / eCredentialRecord {
 }
 ```
 
-## Useful cmd
+## Useful Commands
 
 ```sh
 # Query new plaintext credential from 
 certXd query credentials list-credential --node tcp://localhost:36657
 
 # Query specific encrypted credential with shared key
-# If no key is provided, cipher text of crednetial is returned 
+# If no key is provided, cipher text of credential is returned 
 certXd query eCredentials show-eCredentialRecord <id> <shared key> --node tcp://localhost:36657
 ```
